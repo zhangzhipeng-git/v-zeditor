@@ -36,11 +36,15 @@ export default class NameComponent {
 
 ``` typescript
 /** props */
+
 // 默认没有提交按钮
 hasBtn: boolean = false;
+
 // 主题(r-粉红色，g-护眼绿，b-天空蓝，p-紫色)，默认没有主题
+// 也可以在其父元素或祖先元素上添加类'r'|'g'|'b'|'p'
 theme: 'r'|'g'|'b'|'p' = '';
-// 参数配置
+
+// 参数配置，默认为下面这个
 options: Object = {
   // 编辑内容的最大字节数
   maxsize: 65535,
