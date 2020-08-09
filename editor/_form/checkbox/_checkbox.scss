@@ -1,0 +1,35 @@
+// label
+.z-editor-checkbox {
+    width: 1rem;
+    user-select: none;
+    // checkbox
+    input {
+        display: none;
+    }
+    // icon
+    .z-editor-icomoon {
+        font-size: 1rem;
+        vertical-align: middle;
+    }
+    // 禁用
+    .wd-checkbox-disabled{
+        opacity: .8;
+        cursor: not-allowed;
+    }
+}
+
+// 主题相关
+@each $theme in $themes {
+    // @debug $theme; 
+    $colors: map-get($theme-colors, #{$theme});
+    $main-deep: map-get($colors, main-deep);
+
+    .#{$theme} {
+        .z-editor-checkbox {
+            // checkbox选中后颜色
+            .icon-check-square {
+                color: $main-deep;
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "@bigbigbird/zeditor",
+  "version": "1.0.2",
+  "description": "a simple editor",
+  "main": "dist/index.min.js",
+  "scripts": {
+    "webpack": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "editor",
+    "vue",
+    "富文本编辑器"
+  ],
+  "author": "zzp",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.5",
+    "vue-property-decorator": "^9.0.0"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^4.2.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "sass": "^1.26.10",
+    "sass-loader": "^9.0.3",
+    "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^4.0.0",
+    "ts-loader": "^8.0.2",
+    "typescript": "^3.9.7",
+    "vue-loader": "^15.9.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}

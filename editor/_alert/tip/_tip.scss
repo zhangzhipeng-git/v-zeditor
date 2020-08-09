@@ -1,0 +1,92 @@
+#z-editor-tip {
+    // 弹出层tip
+    .wd-tip,.wd-tip-for-scale {
+        position: fixed;
+        z-index:9999999;
+        max-width: 12rem;
+        left:50%;
+        padding:.7rem .8rem;
+        line-height: 1;
+        font-size: .75rem;
+        text-align: center;
+        color:$white;
+        background-color: #333333;
+        border-radius: .3rem;
+        opacity: .7;
+            filter: alpha(opacity=70);
+    }
+    .wd-tip{
+        transform: translateX(-50%);
+    }
+    // 动画
+    // trans1 - 从下往上（进入） -> 从下到上（离开）
+    .trans1 {
+        &-enter{
+            top:100%;
+        }
+        &-active {
+            top:40%;
+        }
+        &-leave {
+            top:100%;
+        }
+    }
+    // trans2 从下到上（进入） -> 从下往上（离开）
+    .trans2 {
+        &-enter{
+            top:-100%;
+        }
+        &-active {
+            top:40%;
+        }
+        &-leave {
+            top:-100%;
+        }
+    }
+    // scale 放大（进入） -> 缩小（离开）
+    .scale {
+        &-enter{
+            top: 50%;
+            opacity: 0;
+            transform: translate(-50%,-50%) scale(0);
+            filter: alpha(opacity=0);
+        }
+        &-active {
+            top: 50%;
+            transform: translate(-50%,-50%) scale(1);
+            opacity: .7;
+            filter: alpha(opacity=70);
+        }
+        &-leave {
+            top: 50%;
+            transform: translate(-50%,-50%) scale(0);
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+    }
+    // 加载动画_tip
+    .icon-loader{
+        display: inline-block;
+        animation: myloading 1s infinite forwards;
+    }
+    // 关键帧
+    @mixin keyframes($animationName) {
+        @-webkit-keyframes #{$animationName} {
+            @content;
+        }
+
+        @-moz-keyframes #{$animationName} {
+            @content;
+        }
+        @-o-keyframes #{$animationName} {
+            @content;
+        }
+        @keyframes #{$animationName} {
+            @content;
+        }
+    }
+    @include keyframes(myloading){
+        0%{transform: rotateZ(0deg);}
+        100%{transform: rotateZ(360deg);}
+    }
+}

@@ -1,0 +1,49 @@
+.z-editor-table{
+    padding:0 1rem;
+    color:$gray;
+    li{
+        line-height: 2rem;
+        label{
+            font-size: .875rem;
+           
+        }
+        input{
+            width:4rem;
+            height: 1.5rem;
+            margin-left:1rem;
+            padding: 0 .5rem;
+            border-radius: .2rem;
+        }
+    }
+    // 取消和确认
+    .wd-btn-group{
+        margin-top: .5rem;
+        text-align: center;
+        button{
+            margin-left:.5rem;
+            color:white;
+            padding:.2rem .5rem;
+            border-radius: .3rem;
+        }
+    }
+}
+
+// 主题相关
+@each $theme in $themes {
+    // @debug $theme; 
+    $colors: map-get($theme-colors, #{$theme});
+    $main-deep: map-get($colors, main-deep);
+
+    .#{$theme} {
+        .z-editor-table {
+            button:first-child{
+                color: $main-deep;
+                border:1PX solid $main-deep
+            }
+            button:last-child{
+                background-color: $main-deep;
+            }
+        }
+    }
+}
+

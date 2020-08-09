@@ -1,0 +1,98 @@
+// 引入常量
+@import "./variables";
+// 引入继承
+@import './%';
+/**
+ * r - 少女粉，p - 基佬紫，b - 天空色，g - 绿到你发慌
+ */
+$themes: r p b g;
+// 少女粉
+$colors-r: (
+    main-deep: $red-middle, // 深主色
+    main: $red-warm,   // 主色
+    main-light: #ee9090, // 浅主色
+    main-light-s: #f1e9e9, // 超浅主色
+    tip:$gray,         // 提示色
+    text: #674b5d,   // 字体颜色
+    title: #180914,  // 标题颜色
+    warm-title:$red-deep,    // 醒目标题
+    nav: $red-warm,    // 导航字体颜色
+    btn: $red-warm,    // 按钮类颜色
+    hover: $red-warm,  // 悬浮类颜色
+    active:$red-warm,  // 激活类颜色
+    bg: $gray-light-s, // 页面背景色
+    bc: $gray-light-s,   // 输入类边框色
+    vip: $yellow-light,// vip标识色
+    help:$blue-light,  // 辅助色
+    common:#444444,  // 通用色
+    warn: $red-deep,   // 警示色
+);
+// 基佬紫
+$colors-p: (
+    main-deep: $purple-deep, // 深主色
+    main: $purple-middle,   // 主色
+    main-light: #b490ee, // 浅主色
+    main-light-s: #e6ebf3, // 超浅主色
+    tip:$gray-light,               // 提示色
+    text: #1e1922,        // 字体颜色
+    title: #07050c,       // 标题颜色
+    warm-title:$purple-deep,    // 醒目标题
+    nav: $purple-middle,    // 导航字体颜色
+    btn: $purple-middle,    // 按钮类颜色
+    hover: $purple-middle,  // 悬浮类颜色
+    active:$purple-middle,  // 激活类颜色
+    bg: $gray-light-s, // 页面背景色
+    bc: $gray-light-s,   // 输入类边框色
+    vip: $yellow-light,// vip标识色
+    help:$blue-light,  // 辅助色
+    common:#333333,  // 通用色
+    warn: $red-deep,   // 警示色
+);
+// 天空色
+$colors-b: (
+    main-deep: $blue-light, // 深主色
+    main: $blue-sky,   // 主色
+    main-light: #90d8ee, // 浅主色
+    main-light-s: #e2f0f3, // 超浅主色
+    tip:$gray-light,               // 提示色
+    text: #191e22,        // 字体颜色
+    title: #05090c,       // 标题颜色
+    warm-title:$blue-sky,    // 醒目标题
+    nav: $blue-sky,    // 导航字体颜色
+    btn: $blue-sky,    // 按钮类颜色
+    hover: $blue-sky,  // 悬浮类颜色
+    active:$blue-sky,  // 激活类颜色
+    bg: $gray-light-s, // 页面背景色
+    bc: $gray-light-s,   // 输入类边框色
+    vip: $yellow-light,// vip标识色
+    help:$blue-light,  // 浅天蓝色
+    common:#333366,  // 通用色
+    warn: $purple-middle,   // 警示色
+);
+// 绿到你发慌
+$colors-g: (
+    main-deep: $green-deep, // 深主色
+    main: $green-middle,   // 主色
+    main-light: #90ee90, // 浅主色
+    main-light-s: #e0f3e8, // 超浅主色
+    tip:$gray-light,               // 提示色
+    text: #1b2219,        // 字体颜色
+    title: #060c05,       // 标题颜色
+    warm-title:$green-deep,    // 醒目标题
+    nav: $green-middle,    // 导航字体颜色
+    btn: $green-middle,    // 按钮类颜色
+    hover: $green-middle,  // 悬浮类颜色
+    active:$green-middle,  // 激活类颜色
+    bg: $gray-light-s, // 页面背景色
+    bc: $gray-light-s,   // 输入类边框色
+    vip: $yellow-light,// vip标识色
+    help:$blue-light,  // 浅天蓝色
+    common:#333366,  // 通用色
+    warn: $yellow-deep,   // 警示色
+);
+$theme-colors: (r: $colors-r, p:$colors-p ,b:$colors-b ,g:$colors-g);
+
+
+// 字体
+$theme-font-familys: (r:  $font-family-y, p: $font-family-m, b: $font-family-h, g: $font-family-c);
+

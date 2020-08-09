@@ -1,0 +1,17 @@
+// 公用类
+.z-editor-alert {
+    // 遮罩和弹出层容器
+    .wd-mask,
+    .wd-content {
+        position:fixed;
+        z-index:99999;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+    }
+    // 弹出内容容器，可滚动
+    .wd-content{
+        overflow: auto;
+    }
+}

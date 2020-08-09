@@ -1,0 +1,135 @@
+/** 元素去边距，元素内边距与边框的厚度计入盒子整体大小 */
+i,
+a,
+p,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+pre,
+img,
+span,
+audio,
+video,
+table,
+i:after,
+i:before,
+a:after,
+a::before,
+li:after,
+li:before,
+div:after,
+div:before,
+span:after,
+span:before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+/**斜体标签 */
+i,
+em {
+  font-style: italic;
+}
+/**表格重置*/
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/**图片标签*/
+img {
+  width: 100%;
+  height: auto;
+  border: none;
+  vertical-align: middle;
+}
+/**清除链接样式*/
+a:active,
+a:hover,
+a:link,
+a:visited {
+  color: black;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+/**水平线*/
+hr {
+  margin: 0;
+  *margin: 0;
+  border: 0;
+  color: black;
+  background-color: #e1e1e1;
+  height: 1PX
+}
+ul,li {
+  list-style-type: none;
+}
+
+/**渲染成按钮的风格*/
+button,
+input[type=button],
+input[type=reset],
+input[type=submit] {
+    border: none;
+    appearance: button;
+    -o-appearance: button;
+    -ms-appearance: button;
+    -moz-appearance: button;
+    -webkit-appearance: button;
+}
+/**去除表单控件的聚焦后的出现的蓝色边框*/
+input,
+button,
+input:focus,
+button:focus {
+    outline: none;
+    outline-style: none;
+    background-color: white;
+}
+
+input {
+    border: 1PX solid #e6e6e6;
+}
+
+/**清除ie输入框叉叉和密码框眼睛*/
+::-ms-clear,
+::-ms-reveal {
+    display: none;
+}
+
+input:-ms-clear {
+    display: none;
+}
+
+input:-ms-reveal {
+    display: none;
+}
+[tappable] {
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
+  cursor: pointer
+}
+
+/* icon */
+[class^="icon-"],
+[class*=" icon-"],
+.z-editor-icomoon {
+  font-size: .75rem;
+  line-height: .75rem;
+  font-style: normal;
+}
+

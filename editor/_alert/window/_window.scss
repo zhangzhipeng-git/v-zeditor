@@ -1,0 +1,97 @@
+#z-editor-window {
+    // 遮罩
+    .wd-mask {
+        background-color: #3a3434;
+        opacity: .2;
+        filter: alpha(opacity=20);
+    }
+    // 窗体
+    .wd-window {
+        position: absolute;
+        z-index: 99999;
+        background-color: white;
+        border-radius: .3rem;
+    }
+    // 窗体头部
+    .wd-window-tool {
+        line-height: 2rem;
+        background-color: #f4f4f4;
+        border-radius: .3rem .3rem 0 0;
+        user-select: none;
+        cursor: pointer;
+        // title
+        h3 {
+            float: left;
+            padding-left: .7rem;
+            font-size: 1rem;
+        }
+        // 放大缩小，关闭icon容器
+        p {
+            float: right;
+            padding-right: .7rem;
+        }
+        // icon
+        .z-editor-icomoon {
+            font-size: 1rem;
+            cursor: pointer;
+            line-height: 2rem;
+        }
+        // 清除浮动
+        &:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+    }
+    // 窗体面板
+    .wd-window-pannel {
+        padding: .7rem;
+        overflow: auto;
+    }
+    // 动画
+    // trans1 - 从下往上（进入） -> 从下到上（离开）
+    .trans1 {
+        &-enter {
+            top: 100%;
+        }
+        &-active {
+            top: 20%;
+        }
+        &-leave {
+            top: 100%;
+        }
+    }
+    // trans2 从下到上（进入） -> 从下往上（离开）
+    .trans2 {
+        &-enter {
+            top: -100%;
+        }
+        &-active {
+            top: 20%;
+        }
+        &-leave {
+            top: -100%;
+        }
+    }
+    // scale  放大（进入） -> 缩小（离开）
+    .scale {
+        &-enter {
+            top: 20%;
+            transform: scale(0);
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+        &-active {
+            top: 20%;
+            transform: scale(1);
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+        &-leave {
+            top: 20%;
+            transform: scale(0);
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+    }
+}

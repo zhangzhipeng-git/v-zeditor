@@ -1,0 +1,40 @@
+@charset "utf-8";
+
+/* 不需要传参数的应该使用这种，避免冗余代码 */
+// 清除浮动
+%clearfix {
+    &:after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        clear: both;
+    }
+}
+
+// 单行省略号，需要设置宽度
+%onerow-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+// 无右和下外边距
+%no-right-bottom-margin {
+    .wd-no-margin-right {
+        margin-right: 0;
+        margin-right: 0 !important;
+    }
+
+    .wd-no-margin-bottom {
+        margin-bottom: 0;
+        margin-bottom: 0 !important;
+    }
+}
+// ie 6，7 
+%inline-block {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;/*去掉下边距*/
+}

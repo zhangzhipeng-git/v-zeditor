@@ -1,0 +1,41 @@
+// label
+.z-editor-radio {
+    user-select: none;
+    // checkbox
+    .input-radio {
+        display: none;
+    }
+    // icon
+    .z-editor-icomoon {
+        font-size: 1rem;
+        line-height: 1;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+    // span，描述
+    span{
+        line-height: 1;
+        vertical-align: middle;
+    }
+    // 禁用
+    .wd-radio-disabled{
+        opacity: .8;
+        cursor: not-allowed;
+    }
+}
+
+// 主题相关
+@each $theme in $themes {
+    // @debug $theme; 
+    $colors: map-get($theme-colors, #{$theme});
+    $main-deep: map-get($colors, main-deep);
+
+    .#{$theme} {
+        .z-editor-radio {
+            // checkbox选中后颜色
+            .icon-check-circle-thin {
+                color: $main-deep;
+            }
+        }
+    }
+}
