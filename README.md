@@ -35,7 +35,7 @@ export default class NameComponent {
 ```
 
 ``` typescript
-/** props */
+/** props-start */
 
 // 默认没有提交按钮
 hasBtn: boolean = false;
@@ -68,7 +68,10 @@ options: Object = {
   }
 }
 
-/** events */
+/** props-end */
+
+/** events-start */
+
 // 输入事件 @input="input($event)"
 input(innerHTML: string) {
   //...
@@ -107,6 +110,8 @@ uploadFile(obj: {
   const t = 3000; // ms
   close(!isSuccess, t);
 }
+
+/** events-end */
 ```
 
 ``` html
@@ -130,14 +135,15 @@ setInnerHTML(innerHTML: string) {
 
 ## Browser Support
 
-Modern browsers and Internet Explorer 9+.
+标准浏览器和IE9+.
 
 ## Security
 
-在前端可以使用xss过滤  
-在后端可以使用jsoup过滤
+在前端可以使用xss过滤html字符串  
+在后端可以使用jsoup过滤html字符串
 
 ## Concat
 
-QQ:1029512956@qq.com  
-name: 木懵の狗纸
+Name:  木懵の狗纸  
+QQ: 1029512956  
+Email: 1029512956@qq.com  
