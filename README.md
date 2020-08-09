@@ -4,6 +4,12 @@
 
 一款简单、小清新的编辑器
 
+## UI
+
+![image](截图0.jpg)
+
+![image](截图1.jpg)
+
 ## Install
 
 ```shell
