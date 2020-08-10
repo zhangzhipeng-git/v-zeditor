@@ -98,7 +98,7 @@ uploadFile(obj: {
   // type 文件类型
   // file 文件
 
-  // 关闭弹窗的回调
+  // 关闭弹窗
   // 上传成功
   const isSuccess = true;
   close(isSuccess);
@@ -122,7 +122,7 @@ uploadFile(obj: {
 
 ## Problem
 
-使用v-model时，如果需要重新传入innerHTML，请设置一次innerHTML的值为''(空字符串)，因为内部需要记住光标的位置，所以当text有值的时候，并不会重新输入并响应，而重新输入会导致记住的光标无法设置到新的text中。
+使用v-model时，如果需要重新传入innerHTML，请设置一次innerHTML的值为''(空字符串)，因为内部需要记住选区的位置，所以当编辑区有值的时候，并不会重新输入并响应(但是会将输入值发射出去)，重新输入会导致之前的选区丢失。
 
 ``` typescript
 setInnerHTML(innerHTML: string) {
@@ -139,8 +139,8 @@ setInnerHTML(innerHTML: string) {
 
 ## Security
 
-在前端可以使用xss过滤html字符串  
-在后端可以使用jsoup过滤html字符串
+在前端可以使用xss对html进行无害化处理  
+在后端可以使用jsoup对html进行无害化处理
 
 ## Concat
 
