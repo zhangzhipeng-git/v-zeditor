@@ -721,10 +721,34 @@ export default class EditorComponent extends Vue {
     }
 
     /**
-     * 点击编辑面板
+     * 监听按键事件
+     * @param e 按键事件
+     */
+    keydown(e: Event | any) {
+        e = e || window.event;
+        const key = e.keyCode || e.which || e.charCode;
+        if (key != 9) {
+            return;
+        }
+        // 按下tab键，增加缩进2个空格
+        const tab = new Array(4).join('&nbsp;');
+        this.cmd('insertHTML', false, tab)
+        e.preventDefault();
+        return;
+    }
+
+    /**
+     * 点击面板
      */
     clickPannel() {
-        this.startEdit(false);
+        // 如果有内容则不设置历史格式
+        if (!this.pannel.innerText && !this.pannel.textContent){
+            this.setHistoryFormat();
+        }
+        // 如果未聚焦则标记聚焦
+        if (!this.isInEditStatus) {
+            this.isInEditStatus = true;
+        }
         this.setRange();
     }
 

@@ -135,7 +135,7 @@ setInnerHTML(innerHTML: string) {
 
 ## Browser Support
 
-标准浏览器和IE9+.
+PC端标准浏览器和IE9+.
 
 ## Security
 

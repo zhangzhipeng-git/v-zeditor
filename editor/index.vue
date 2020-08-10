@@ -326,12 +326,13 @@
 
       <div
         ref="pannel"
+        v-html="vhtml$"
+        @keydown="keydown"
         @click="clickPannel"
         @blur="isInEditStatus=false"
         @input="setRangeAndEmitValue"
         class="wd-deitor-content"
         contenteditable="true"
-        v-html="vhtml$"
       ></div>
       <!-- 编辑体结束 -->
       <div class="wd-edit-footer fn-clearfix" ref="footer">

@@ -62,7 +62,7 @@ module.exports = {
         minimize: true,
         minimizer: [new TerserJSPlugin({
             cache: true, // 是否缓存
-            parallel: 4, // 是否并行打包
+            parallel: true, // 是否并行打包
             sourceMap: false,
             terserOptions: {
                 compress: {
