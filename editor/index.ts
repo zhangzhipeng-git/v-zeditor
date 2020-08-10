@@ -731,7 +731,7 @@ export default class EditorComponent extends Vue {
             return;
         }
         // 按下tab键，增加缩进2个空格
-        const tab = new Array(4).join('&nbsp;');
+        const tab = new Array(5).join('&nbsp;');
         this.cmd('insertHTML', false, tab)
         e.preventDefault();
         return;
