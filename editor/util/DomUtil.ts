@@ -20,18 +20,6 @@ export default class DomUtil {
         return document.getElementById(id);
     }
 
-    /** 
-     * 获取n的父节点
-     * @param  {any} n 节点
-     */
-    static getPreNode(n: HTMLElement) {
-        let pre = n.previousSibling;
-        while (pre && pre.nodeType !== 1) {
-            pre = pre.previousSibling;
-        }
-        return pre;
-    }
-
     /**
      * 找元素的所有子节点
      * @param p 父元素
@@ -64,24 +52,15 @@ export default class DomUtil {
     }
 
     /**
-    * 找目标元素的的某个标签的urls和base64的url
-    * @param target 元素
-    * @param tag 标签
-    */
-    static getUrlsByTag(target: HTMLElement, tag: string): {type: 'url'|'base64', src: string}[] {
-       const arr = <any>[];
-       const tags = target.getElementsByTagName(tag.toUpperCase());
-       Array.prototype.forEach.call(tags, elem => {
-           const item = <any>{};
-           const src = elem.src;
-           if (src.indexOf('data:image/png;base64,') === -1) {
-               item.type = 'url';
-           } else {
-               item.type = 'base64';
-           }
-           item.src = src;
-           arr.push(item);
-       })
-       return arr;
-   }
+     * 从低层次往高层次找第index个父节点，没有则返回null
+     * @param  {HTMLElement} el 目标元素
+     * @param  {number=1} index 第index个父元素
+     */
+    static parent(el: HTMLElement, index: number = 1) {
+        let count = index + 1;
+        while (el && --count) {
+            el = (<any>el.parentNode);
+        }
+        return el;
+    }
 }

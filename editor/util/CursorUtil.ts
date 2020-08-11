@@ -82,10 +82,7 @@ export default class CursorUtil {
      * @param  {HTMLElement} elem
      */
     static selectSelectionElementChilds(elem: HTMLElement) {
-        if (!elem) {
-            console.log('selectSelectionElementChilds no elem');
-            return;
-        }
+        if (!elem) return;
         const selection = this.getSelection();
         if ((<any>selection).selectAllChildren) {
             (<Selection>selection).selectAllChildren(elem);
@@ -101,10 +98,7 @@ export default class CursorUtil {
      * @param {number} index ? 默认0 range下标
      */
     static selectRangeElementChilds(elem: HTMLElement, index: number = 0) {
-        if (!elem) {
-            console.log('selectRangeElementChilds no elem');
-            return;
-        }
+        if (!elem) return;
         const range = this.getRange(index);
         if ((<any>range).selectNodeContents) {
             (<Range>range).selectNodeContents(elem);
@@ -187,13 +181,12 @@ export default class CursorUtil {
             range.setEnd(range.endContainer, e);
             return;
         }
-        range = <TextRange>range;
         // 重置TextRange到头部
-        range.collapse(false);
-        range.select();
-        range.moveEnd('charactor', e);
-        range.moveStart('charactor', e);
-        range.select();
+        (<TextRange>range).collapse(false);
+        (<TextRange>range).select();
+        (<TextRange>range).moveEnd('charactor', e);
+        (<TextRange>range).moveStart('charactor', e);
+        (<TextRange>range).select();
     }
 
     /**
@@ -214,48 +207,25 @@ export default class CursorUtil {
             selection.setBaseAndExtent(selection.anchorNode, s, selection.focusNode, e);
             return;
         }
-        selection = <TextRange>selection;
         // 重置TextRange到头部
-        selection.collapse(false);
-        selection.select();
-        selection.moveEnd('charactor', e);
-        selection.moveStart('charactor', e);
-        selection.select();
+        (<TextRange>selection).collapse(false);
+        (<TextRange>selection).select();
+        (<TextRange>selection).moveEnd('charactor', e);
+        (<TextRange>selection).moveStart('charactor', e);
+        (<TextRange>selection).select();
     }
     /**
-     * 获取range的起始，结束位置节点
-     * @param  {number=0} index 可选，默认第一个，旧标准就1个
-     * @returns {start: Node, end: Node}
+     * 获取range起始位置和结束位置的最浅的父元素
+     * 
+     * 比如：\<p\>(range-start)123(range-end)\</p\>的公共父元素为text，而不是p标签
+     * @param  {number=0} index? 可选，默认第一个，旧标准就1个
+     * @returns Node
      */
-    static getRangeContainer(index: number = 0): { start: Node, end: Node } {
-        let range = this.getRange(index);
-        // 新标准
-        if ((<any>range).startContainer) {
-            range = <Range>range;
-            return { start: range.startContainer, end: range.endContainer }
+    static getRangeCommonParent(index: number = 0): Node {
+        const range = this.getRange(index);
+        if ((<any>range).commonAncestorContainer) {
+            return (<Range>range).commonAncestorContainer;
         }
-        // 旧标准
-        range = <TextRange>range;
-        const parent = range.parentElement();
-        return { start: parent, end: parent }
-    }
-    /**
-     *  获取range的起始，结束位置节点
-     * @returns  {start: Node | null, end: Node | null}
-     */
-    static getSelectionContainer(): { start: Node | null, end: Node | null } {
-        let selection = this.getSelection();
-        // 新标准
-        if ((<any>selection).getRangeAt) {
-            selection = <Selection>selection;
-            if (!selection.anchorNode || selection.focusNode) {
-                return { start: null, end: null };
-            }
-            return { start: selection.anchorNode, end: selection.focusNode }
-        }
-        // 旧标准
-        selection = <TextRange>selection;
-        const parent = selection.parentElement();
-        return { start: parent, end: parent }
+        return (<TextRange>range).parentElement();
     }
 }

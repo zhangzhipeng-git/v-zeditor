@@ -27,7 +27,7 @@ interface Options {
     /** 上传超时 ms */
     timeout: number;
     /** 上传图片的配置参数 */
-    audio: {
+    image: {
         /** 上传的最大图片数量 */
         count: number;
         /** 小于指定字节数会进行base64编码 */
@@ -45,7 +45,7 @@ interface Options {
     };
 }
 
-@Component({name: 'z-editor'})
+@Component
 export default class EditorComponent extends Vue {
     /** v-model */
     @Model('input')
@@ -65,7 +65,7 @@ export default class EditorComponent extends Vue {
     /** 颜色 */
     colors = [["#ffffff", "#000000", "#eeece1", "#1f497d", "#4f81bd", "#c0504d", "#9bbb59", "#8064a2", "#4bacc6", "#f79646"], ["#f2f2f2", "#7f7f7f", "#ddd9c3", "#c6d9f0", "#dbe5f1", "#f2dcdb", "#ebf1dd", "#e5e0ec", "#dbeef3", "#fdeada"], ["#d8d8d8", "#595959", "#c4bd97", "#8db3e2", "#b8cce4", "#e5b9b7", "#d7e3bc", "#ccc1d9", "#b7dde8", "#fbd5b5"], ["#bfbfbf", "#3f3f3f", "#938953", "#548dd4", "#95b3d7", "#d99694", "#c3d69b", "#b2a2c7", "#92cddc", "#fac08f"], ["#a5a5a5", "#262626", "#494429", "#17365d", "#366092", "#953734", "#76923c", "#5f497a", "#31859b", "#e36c09"], ["#7f7f7f", "#0c0c0c", "#1d1b10", "#0f243e", "#244061", "#632423", "#4f6128", "#3f3151", "#205867", "#974806"], ["#c00000", "#ff0000", "#ffc000", "#ffff00", "#92d050", "#00b050", "#00b0f0", "#0070c0", "#002060", "#7030a0"]];
     /** 字体大小 */
-    fontSizes = [{ key: "xx-small", value: "1" }, { key: "x-small", value: "2" }, { key: "small", value: "3" }, { key: "medium", value: "4" }, { key: "large", value: "5" }, { key: "x-large", value: "6" }, { key: "xx-large", value: "7" }];
+    fontSizes = [{ key: "xx-small", value: "1", value$: 9 / 16 }, { key: "x-small", value: "2", value$: 10 / 16 }, { key: "small", value: "3", value$: 12 / 16 /** 13/16调整为12/16 */ }, { key: "medium", value: "4", value$: 16 / 16 }, { key: "large", value: "5", value$: 18 / 16 }, { key: "x-large", value: "6", value$: 24 / 16 }, { key: "xx-large", value: "7", value$: 32 / 16 }];
     /** code */
     codes = ['Html', 'Css', 'Js', 'TypeScript', 'Sass', 'Java', 'Xml', 'Sql', 'Shell'];
     /** 选中的字样 */
@@ -104,7 +104,7 @@ export default class EditorComponent extends Vue {
     parent!: HTMLElement;
     /** 合并参数 */
     get options$() {
-        return Object.assign({ maxsize: 65535, image: { count: 5, base64: 60000 }, audio: { count: 1 }, video: { count: 1 } }, this.options);
+        return Object.assign({ maxsize: 65535, timeout: 10000, image: { count: 5, base64: 60000 }, audio: { count: 1 }, video: { count: 1 } }, this.options);
     }
     /** 当输入值有值的时候，取消vhtml$的重新赋值，避免重新赋值导致光标丢失！！！ */
     /** 如果确实要重新输入绑定，请设置一次vhtml为空！！！ */
@@ -252,6 +252,20 @@ export default class EditorComponent extends Vue {
         const fontSize = this.fontSizes[index * 1];
         this.fontSize = fontSize;
         this.cmd("fontSize", false, fontSize.value);
+        this.adjustFontSizeWithStyle(<any>fontSize);
+    }
+    /**
+     * 调整字体大小
+     * @param  {{value:number} fontSize
+     * @param  {string}} value$
+     */
+    adjustFontSizeWithStyle(fontSize: { value: number, value$: string }) {
+        const el = <HTMLElement>CursorUtil.getRangeCommonParent();
+        const fonts = DomUtil.parent(el, 2).querySelectorAll(`font[size="${fontSize.value}"]`);
+        Array.prototype.forEach.call(fonts, font => {
+            font.size = '';
+            font.style.fontSize = fontSize.value$ + 'rem';
+        });
     }
 
     /**
@@ -315,12 +329,12 @@ export default class EditorComponent extends Vue {
         this.code = this.codes[index];
         const id = new Date().getTime() + '';
         const code = this.code.toLowerCase();
-        let html = `<p><pre title="代码区" class="code ${code}"><code class="${code}"><p id="${id}"><br/></p></code></pre></p><p><br/></p>`;
+        let html = `<p><br/></p><p><pre title="代码区" class="code ${code}"><code class="${code}"><p id="${id}"><br/></p></code></pre></p><p><br/></p>`;
         this.removeFormat(e);
         this.cmd('insertHTML', false, html);
         // 插入html后，将光标移至代码区的p标签中
         CursorUtil.setRangeToElement(<any>DomUtil.id(id), true);
-        this.setRange(); // 手动记住光标
+        this.setRange(); // 手动设置一下
     }
 
     /**
@@ -435,7 +449,7 @@ export default class EditorComponent extends Vue {
             this.toast('代码区无法插入表格~');
             return;
         }
-        this.alert({ title: "插入表格", animation: "scale", content: UITable, handler: this , theme: this.theme});
+        this.alert({ title: "插入表格", animation: "scale", content: UITable, handler: this, theme: this.theme });
     }
     /**
      * 点击表格UI弹窗确认时回调
@@ -456,7 +470,7 @@ export default class EditorComponent extends Vue {
             this.toast('代码区无法插入链接~');
             return;
         }
-        this.alert({ title: "插入链接", animation: "scale", content: UILink, handler: this , theme: this.theme});
+        this.alert({ title: "插入链接", animation: "scale", content: UILink, handler: this, theme: this.theme });
     }
     /**
      * 点击超链接UI弹窗确认时回调
@@ -477,7 +491,7 @@ export default class EditorComponent extends Vue {
             this.toast('代码区无法插入文件~');
             return;
         }
-        this.alert({ title: "插入文件", animation: "scale", content: UIAnnex, handler: this , theme: this.theme});
+        this.alert({ title: "插入文件", animation: "scale", content: UIAnnex, handler: this, theme: this.theme });
     }
     /**
      * 点击上传文件UI弹窗上传本地文件时嵌入base64时回调
@@ -643,6 +657,14 @@ export default class EditorComponent extends Vue {
     }
 
     /**
+     * 查询是否支持命令
+     * @param cmd 命令
+     */
+    isSupport(cmd: string): boolean {
+        return document.queryCommandSupported(cmd);
+    }
+
+    /**
      * 执行封装的编辑命令
      * @param k 命令名称
      * @param ui 打开ui弹窗
@@ -664,60 +686,10 @@ export default class EditorComponent extends Vue {
     }
 
     /**
-     * 查询是否支持命令
-     * @param cmd 命令
+     * input,click,selectionchange事件记录编辑面板光标位置
      */
-    isSupport(cmd: string): boolean {
-        return document.queryCommandSupported(cmd);
-    }
-
-    /**
-     * 发射编辑内容
-     */
-    emitContent() {
-        const editPannel = <any>this.pannel;
-        // 检测编辑内容大小
-        let innerHTML = this.getInnerHTML(editPannel.innerHTML);
-        const image = DomUtil.getUrlsByTag(this.pannel, 'img');
-        const audio = DomUtil.getUrlsByTag(this.pannel, 'audio');
-        const video = DomUtil.getUrlsByTag(this.pannel, 'video');
-        const obj = {
-            innerHTML,
-            innerTEXT: editPannel.innerText || editPannel.textContent,
-            urls: { image, audio, video }
-        };
-        this.$emit('recieveContent', obj);
-    }
-
-    /**
-     * 判断光标是否在代码区内
-     * @returns {boolean} true - 在代码区内，false - 不在代码区内
-     */
-    isRangeInCode(): boolean {
-        this.pannelFocus();
-        const container = <any>CursorUtil.getRangeContainer();
-        if (!container.end && !container.start) return false;
-        if (!container.end.parentNode && !container.start.parentNode) return false;
-        return container.end.parentNode.tagName === 'CODE' || container.start.parentNode.tagName === 'CODE' || container.end.parentNode.parentNode.tagName === 'CODE' || container.start.parentNode.parentNode.tagName === 'CODE';
-    }
-
-    /**
-     * 输入时记住光变位置 && input事件发射value && 记住输入
-     */
-    setRangeAndEmitValue() {
-        // 记住选区
-        this.setRange();
-        this.debounce(() => {
-            let innerHTML = this.pannel.innerHTML;
-            if (this.vhtml$ === innerHTML) return;
-            // 有内容时才保存到本地
-            const len = (this.pannel.innerText || this.pannel.textContent).length;
-            if (len > 1) {
-                window.localStorage.setItem('editor_input', innerHTML);
-            }
-            innerHTML = this.getInnerHTML(innerHTML);
-            this.$emit('input', innerHTML);
-        });
+    setRange() {
+        this.range = CursorUtil.getRange(0, this.pannel);
     }
 
     /**
@@ -742,7 +714,7 @@ export default class EditorComponent extends Vue {
      */
     clickPannel() {
         // 如果有内容则不设置历史格式
-        if (!this.pannel.innerText && !this.pannel.textContent){
+        if (!this.pannel.innerText && !this.pannel.textContent) {
             this.setHistoryFormat();
         }
         // 如果未聚焦则标记聚焦
@@ -753,10 +725,101 @@ export default class EditorComponent extends Vue {
     }
 
     /**
-     * input,click,selectionchange事件记录编辑面板光标位置
+     * 输入时记住光变位置 && input事件发射value && 记住输入
      */
-    setRange() {
-        this.range = CursorUtil.getRange(0, this.pannel);
+    setRangeAndEmitValue() {
+        this.setRange();
+        this.debounce(() => {
+            const innerHTML = this.pannel.innerHTML;
+            if (this.vhtml$ === innerHTML) return;
+            // 有内容时才保存到本地
+            const len = (this.pannel.innerText || this.pannel.textContent).length;
+            if (len > 1) {
+                window.localStorage.setItem('editor_input', innerHTML);
+            }
+            // 记住选区
+            this.$emit('input', innerHTML);
+        });
+    }
+
+    /**
+     * 发射编辑内容
+     */
+    emitContent() {
+        let size = 0;
+        const editPannel = <any>this.pannel;
+        // 检测编辑内容大小
+        let innerHTML: string = editPannel.innerHTML;
+        for (let i = 0, len = innerHTML.length; i < len; i++) {
+            const c = innerHTML.charCodeAt(i);
+            if (c > 0 && c < 255) {
+                size++;
+            } else {
+                size += 2;
+            }
+        }
+        if (size > this.options$.maxsize) {
+            this.toast('编辑内容超出大小~');
+            innerHTML = innerHTML.substr(0, this.options$.maxsize);
+        }
+        const image = this.getUrlsByTag(this.pannel, 'img');
+        const audio = this.getUrlsByTag(this.pannel, 'audio');
+        const video = this.getUrlsByTag(this.pannel, 'video');
+        const obj = {
+            innerHTML,
+            innerTEXT: editPannel.innerText || editPannel.textContent,
+            urls: { image, audio, video }
+        };
+        this.$emit('recieveContent', obj);
+    }
+
+    /**
+    * 找目标元素的的某个标签的urls和base64的url
+    * @param target 元素
+    * @param tag 标签
+    */
+    getUrlsByTag(target: HTMLElement, tag: string): { type: 'url' | 'base64', src: string }[] {
+        const arr = <any>[];
+        const tags = target.getElementsByTagName(tag.toUpperCase());
+        Array.prototype.forEach.call(tags, elem => {
+            const item = <any>{};
+            const src = elem.src;
+            if (src.indexOf('data:image/png;base64,') === -1) {
+                item.type = 'url';
+            } else {
+                item.type = 'base64';
+            }
+            item.src = src;
+            arr.push(item);
+        })
+        return arr;
+    }
+
+    /**
+     * 判断范围Range是否和代码区有交集
+     * @returns {boolean} true - 有交集，false - 无交集
+     */
+    isRangeInCode(): boolean {
+        this.pannelFocus();
+        let parent = <any>CursorUtil.getRangeCommonParent();
+        if (!parent) return false;
+        // 如果是文本节点则找其父元素
+        if (parent.nodeType === 3) parent = parent.parentNode;
+        return (() => { // 被包含
+            let parent$ = parent;
+            while (parent$ = parent$.parentNode) {
+                if (parent$.tagName === 'CODE') {
+                    return true;
+                }
+                if (parent$ === this.pannel) {
+                    return false;
+                }
+            }
+            return false;
+        })() || (() => { // 包含
+            const nodes = parent.querySelectorAll('code');
+            return nodes && nodes.length;
+        })();
     }
 
     /**
@@ -776,32 +839,11 @@ export default class EditorComponent extends Vue {
     }
 
     /**
-     * 获取符合长度的innerHTML
-     * @param  {string} innerHTML
-     */
-    private getInnerHTML(innerHTML: string) {
-        let size = 0;
-        for (let i = 0, len = innerHTML.length; i < len; i++) {
-            const c = innerHTML.charCodeAt(i);
-            if (c > 0 && c < 128) {
-                size++;
-            } else {
-                size += 2;
-            }
-        }
-        if (size > this.options$.maxsize) {
-            this.toast('编辑内容超出大小~');
-            innerHTML = innerHTML.substr(0, this.options$.maxsize);
-        }
-        return innerHTML;
-    }
-
-    /**
      * 防抖
      * @param  {Function} f 回调
      * @param  {number=3000} t 防抖时延
      */
-    private debounce(f: Function, t: number = 3000) {
+    debounce(f: Function, t: number = 3000) {
         const o = <any>this.debounce;
         clearTimeout(o.timer);
         o.timer = setTimeout(() => {
