@@ -28,9 +28,8 @@ export default class UIAnnexComponent extends Vue {
     type: 'image' | 'audio' | 'video' = "image";
     /** 获取类型对应的名称 */
     typeName: string = '图片';
-    /** 是否重渲染文件input */
+    /** 重渲染input file */
     rebuild: boolean = true;
-    /** 单选组 */
     radioGroup: Radio[] = [{ value: "image", text: "图片" }, { value: "audio", text: "音频" }, { value: "video", text: "视频" }];
     /** 图片类型 */
     static IMAGEARR = ["image/gif", "image/jpeg", "image/jpg", "image/png", "image/svg"];
@@ -104,14 +103,14 @@ export default class UIAnnexComponent extends Vue {
             });
             return;
         }
-        // 判断图片是否需转成base64
+        // 判断文件是否需转成base64
         const base64size = option.base64 || 0;
         if (base64size && file.size <= base64size) {
             // 转成base64
             const fr = new FileReader();
             fr.readAsDataURL(file);
             fr.onload = (event: any) => {
-                if (handler.recieveLocalFileHTML(this.getImageHTML(event.target.result))) {
+                if (handler.recieveLocalFileHTML(this.getFileHTML(event.target.result))) {
                     (<any>this.$parent).close();
                 }
             };
@@ -166,9 +165,18 @@ export default class UIAnnexComponent extends Vue {
             });
             return;
         }
-        let html = "";
-        const type = this.type;
-        switch (type) {
+        const html = this.getFileHTML(this.url);
+        if ((<any>this.$attrs.handler).recieveFileLinkHTML(html))
+            (<any>this.$parent).close();
+    }
+
+    /**
+     * 传入src并根据类型获取文件html
+     * @param  {string} src
+     */
+    getFileHTML(src: string) {
+        let html = '';
+        switch (this.type) {
             case "image":
                 html = this.getImageHTML(this.url);
                 break;
@@ -179,8 +187,7 @@ export default class UIAnnexComponent extends Vue {
                 html = this.getVideoHTML(this.url);
                 break;
         }
-        if ((<any>this.$attrs.handler).recieveFileLinkHTML(html))
-            (<any>this.$parent).close();
+        return html;
     }
 
     /**

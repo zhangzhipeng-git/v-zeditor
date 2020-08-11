@@ -1,10 +1,11 @@
 {
   "name": "@bigbigbird/zeditor",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "a simple editor",
   "main": "dist/index.min.js",
   "scripts": {
     "webpack": "webpack",
+    "webpack:publish": "npm run webpack && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
