@@ -101,7 +101,8 @@ uploadFile(obj: {
   // 关闭弹窗
   // 上传成功
   const isSuccess = true;
-  close(isSuccess);
+  const html = '<img src="xxx" />';
+  close(html,isSuccess);
   // 上传失败
   const isSuccess = true;
   close(!isSuccess);
