@@ -105,7 +105,7 @@ uploadFile(obj: {
   // 上传失败
   close(false);
   // 上传超时
-  const t = 3000; // ms
+  const t = 3000; // 超时时间ms
   close(false, t);
 }
 
