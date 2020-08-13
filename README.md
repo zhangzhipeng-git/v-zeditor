@@ -100,15 +100,13 @@ uploadFile(obj: {
 
   // 关闭弹窗
   // 上传成功
-  const isSuccess = true;
-  close(isSuccess);
+  const src = 'http://www.example.com';
+  close(src);
   // 上传失败
-  const isSuccess = true;
-  close(!isSuccess);
+  close(false);
   // 上传超时
-  const isSuccess = true;
   const t = 3000; // ms
-  close(!isSuccess, t);
+  close(false, t);
 }
 
 /** events-end */

@@ -120,7 +120,7 @@ export default class UIAnnexComponent extends Vue {
                 text: "上传中~",
                 duration: -1
             });
-            handler.emitUploadFile && handler.emitUploadFile(this.type, file, (isSuccess: boolean, t?: number) => {
+            handler.emitUploadFile && handler.emitUploadFile(this.type, file, this.getFileHTML, (isSuccess: boolean, t?: number) => {
                 if (isSuccess) { // 上传成功
                     tip.close();
                     (<any>this.$parent).close();

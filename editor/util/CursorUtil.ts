@@ -228,4 +228,34 @@ export default class CursorUtil {
         }
         return (<TextRange>range).parentElement();
     }
+
+    /**
+     * 删除选中内容
+     * @param  {number=0} index? range对象下标，默认0
+     */
+    static deleteRangeContent(index: number = 0) {
+        const range = this.getRange(index);
+        if ((<any>range).deleteContents) {
+            (<Range>range).deleteContents();
+            return;
+        }
+        (<TextRange>range).pasteHTML('');
+        (<TextRange>range).select();
+    }
+
+    /**
+     * 插入节点
+     * @param  {Node} node 节点
+     * @param  {number=0} index? range对象下标，默认0
+     */
+    static insertNode(node: Node, index: number = 0) {
+        this.deleteRangeContent(index);
+        const range = this.getRange(index);
+        if ((<any>range).insertNode) {
+            (<Range>range).insertNode(node);
+            return;
+        }
+        (<TextRange>range).pasteHTML((<HTMLElement>node).outerHTML);
+        (<TextRange>range).select();
+    }
 }

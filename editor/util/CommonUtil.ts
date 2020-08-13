@@ -4,13 +4,20 @@
  * Created Date: Sunday, August 2nd 2020, 6:40:26 pm
  * Author: 张志鹏
  * Contact: 1029512956@qq.com
- * Description: dom操作工具类
+ * Description: 通用工具类
  * Last Modified: Tuesday August 4th 2020 8:02:37 pm
  * Modified By: 张志鹏
  * Copyright (c) 2020 ZXWORK
  */
 /** dom工具类 */
-export default class DomUtil {
+export default class CommonUtil {
+
+    /**
+     * 判断是否ie
+     */
+    static isIE() {
+        return !!((<any>window).ActiveXObject || "ActiveXObject" in window);
+    }
 
     /**
      * 根据id找元素
@@ -62,5 +69,18 @@ export default class DomUtil {
             el = (<any>el.parentNode);
         }
         return el;
+    }
+
+    /**
+     * 防抖
+     * @param  {Function} f 回调
+     * @param  {number=300} t? 防抖时延 默认300ms
+     */
+    static debounce(f: Function, t: number = 300) {
+        const o = <any>this.debounce;
+        clearTimeout(o.timer);
+        o.timer = setTimeout(() => {
+            f();
+        }, t)
     }
 }

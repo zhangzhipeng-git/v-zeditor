@@ -18,7 +18,7 @@ import WindowComponent, { WindowOptions } from "./_alert/window/window";   // �
 import UILink from "./ui-link/ui-link.vue";             // 超链接UI组件
 import UITable from "./ui-table/ui-table.vue";          // 表格UI组件
 import UIAnnex from "./ui-annex/ui-annex.vue";          // 附件UI组件
-import DomUtil from "./util/DomUtil";                   // dom工具类
+import CommonUtil from "./util/CommonUtil";                   // dom工具类
 import CursorUtil from './util/CursorUtil';             // 光标工具类
 /** 编辑器配置参数 */
 interface Options {
@@ -261,7 +261,7 @@ export default class EditorComponent extends Vue {
      */
     adjustFontSizeWithStyle(fontSize: { value: number, value$: string }) {
         const el = <HTMLElement>CursorUtil.getRangeCommonParent();
-        const fonts = DomUtil.parent(el, 2).querySelectorAll(`font[size="${fontSize.value}"]`);
+        const fonts = CommonUtil.parent(el, 2).querySelectorAll(`font[size="${fontSize.value}"]`);
         Array.prototype.forEach.call(fonts, font => {
             font.size = '';
             font.style.fontSize = fontSize.value$ + 'rem';
@@ -329,11 +329,11 @@ export default class EditorComponent extends Vue {
         this.code = this.codes[index];
         const id = new Date().getTime() + '';
         const code = this.code.toLowerCase();
-        let html = `<p><br/></p><p><pre title="代码区" class="code ${code}"><code class="${code}"><p id="${id}"><br/></p></code></pre></p><p><br/></p>`;
-        this.removeFormat(e);
+        let html = `<p><br/></p><pre style="white-space: pre" title="代码区"><code class="${code}"><p id="${id}"><br/></p></code></pre><p><br/></p>`;
+        this.removeFormat();
         this.cmd('insertHTML', false, html);
         // 插入html后，将光标移至代码区的p标签中
-        CursorUtil.setRangeToElement(<any>DomUtil.id(id), true);
+        CursorUtil.setRangeToElement(<any>CommonUtil.id(id), true);
         this.setRange(); // 手动设置一下
     }
 
@@ -511,12 +511,20 @@ export default class EditorComponent extends Vue {
         this.cmd('insertHTML', false, html);
         return true;
     }
-    /** 发射选择文件事件 */
-    emitUploadFile(type: 'image' | 'audio' | 'video', file: any, close: Function) {
+    /**
+     * 发射选择文件事件
+     * @param  {'image'|'audio'|'video'} type 文件类型
+     * @param  {any} file 文件
+     * @param  {Function} parser 传入src获取html
+     * @param  {Function} close  关闭弹窗和遮罩
+     */
+    emitUploadFile(type: 'image' | 'audio' | 'video', file: any, parser: Function, close: Function) {
         this.$emit('uploadFile', {
-            type, file, callback: (html: string, isSuccess: boolean, t?: number) => {
-                this.recieveFileLinkHTML(html);
-                close(isSuccess, t);
+            type, file, callback: (src: string | boolean, t?: number) => {
+                if (!!src) {
+                    this.recieveFileLinkHTML(parser(src));
+                }
+                close(!!src, t);
             }
         });
     }
@@ -593,14 +601,11 @@ export default class EditorComponent extends Vue {
     }
 
     /**
-     * 清除格式
+     * 清除格式，不阻止失焦，重新聚焦时会设置历史格式
      */
-    removeFormat(e: any) {
-        this.ensureFocus(e);
-        // 选中文字清除格式
+    removeFormat() {
         this.cmd("removeFormat", false);
         this.initFormatData();
-        this.setHistoryFormat();
     }
 
     /**
@@ -610,27 +615,27 @@ export default class EditorComponent extends Vue {
     hideSwitchPannel(e: any) {
         e = e || window.event;
         const target = e.target || e.srcElement;
-        if (this.switchFontFamilyPannel && !DomUtil.contains(<HTMLElement>this.$refs.fontName, target)) {
+        if (this.switchFontFamilyPannel && !CommonUtil.contains(<HTMLElement>this.$refs.fontName, target)) {
             this.switchFontFamilyPannel = false;
             return;
         }
-        if (this.switchFontSizePannel && !DomUtil.contains(<HTMLElement>this.$refs.fontSize, target)) {
+        if (this.switchFontSizePannel && !CommonUtil.contains(<HTMLElement>this.$refs.fontSize, target)) {
             this.switchFontSizePannel = false;
             return;
         }
-        if (this.switchForeColorPannel && !DomUtil.contains(<HTMLElement>this.$refs.foreColor, target)) {
+        if (this.switchForeColorPannel && !CommonUtil.contains(<HTMLElement>this.$refs.foreColor, target)) {
             this.switchForeColorPannel = false;
             return;
         }
-        if (this.switchBackColorPannel && !DomUtil.contains(<HTMLElement>this.$refs.backColor, target)) {
+        if (this.switchBackColorPannel && !CommonUtil.contains(<HTMLElement>this.$refs.backColor, target)) {
             this.switchBackColorPannel = false;
             return;
         }
-        if (this.switchFormatBlockPannel && !DomUtil.contains(<HTMLElement>this.$refs.formatBlock, target)) {
+        if (this.switchFormatBlockPannel && !CommonUtil.contains(<HTMLElement>this.$refs.formatBlock, target)) {
             this.switchFormatBlockPannel = false;
             return;
         }
-        if (this.switchCodePannel && !DomUtil.contains(<HTMLElement>this.$refs.code, target)) {
+        if (this.switchCodePannel && !CommonUtil.contains(<HTMLElement>this.$refs.code, target)) {
             this.switchCodePannel = false;
             return;
         }
@@ -676,7 +681,7 @@ export default class EditorComponent extends Vue {
             this.toast('系统不支持该命令~');
             return false;
         }
-        const whiteList = 'insertHTML,paste,cut,copy,delete,selectAll,removeFormat,redo,undo,insertBrOnReturn';
+        const whiteList = 'insertHTML,paste,cut,copy,removeFormat,delete,selectAll,redo,undo,insertBrOnReturn';
         if (whiteList.indexOf(k) < 0 && this.isRangeInCode()) {
             this.toast('代码区内无法执行该命令~');
             return false;
@@ -712,7 +717,7 @@ export default class EditorComponent extends Vue {
     /**
      * 点击面板
      */
-    clickPannel() {
+    pannelOnClick() {
         // 如果有内容则不设置历史格式
         if (!this.pannel.innerText && !this.pannel.textContent) {
             this.setHistoryFormat();
@@ -725,11 +730,32 @@ export default class EditorComponent extends Vue {
     }
 
     /**
-     * 输入时记住光变位置 && input事件发射value && 记住输入
+     * 在编辑面板中粘贴
      */
-    setRangeAndEmitValue() {
+    pannelOnPaste(e: any) {
+        if (!this.isRangeInCode()) return;
+        let obj = <any>CommonUtil.isIE() ? window : e;
+        if (!obj.clipboardData) return;
+        const text = obj.clipboardData.getData("text")
+            .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const p = document.createElement('P');
+        p.innerHTML = text;
+        CursorUtil.insertNode(p);
+        e.preventDefault();
+        e.returnValue = false;
+        this.setRangeAndEmitValue(0);
+    }
+
+    /**
+     * 输入时记住光变位置 && input事件发射value && 记住输入
+     * @param  arg0
+     */
+    setRangeAndEmitValue(arg0: number | Event) {
+        if (typeof arg0 !== 'number') {
+            arg0 = 300;
+        }
         this.setRange();
-        this.debounce(() => {
+        CommonUtil.debounce(() => {
             const innerHTML = this.pannel.innerHTML;
             if (this.vhtml$ === innerHTML) return;
             // 有内容时才保存到本地
@@ -737,9 +763,9 @@ export default class EditorComponent extends Vue {
             if (len > 1) {
                 window.localStorage.setItem('editor_input', innerHTML);
             }
-            // 记住选区
+            // 发射innerHTML
             this.$emit('input', innerHTML);
-        });
+        }, arg0);
     }
 
     /**
@@ -825,9 +851,10 @@ export default class EditorComponent extends Vue {
     /**
      * toast提示
      * @param  {string} text? toast提示 默认为‘设置无效~’
+     * @param  {number} duration? 停留时间
      */
-    toast(text: string = '设置无效~') {
-        TipComponent.showTip({ text });
+    toast(text: string = '设置无效~', obj?: { duration: number, enter: number, leave: number }) {
+        return TipComponent.showTip({ text, ...obj });
     }
 
     /**
@@ -835,19 +862,7 @@ export default class EditorComponent extends Vue {
      * @param obj 
      */
     alert(obj: WindowOptions) {
-        WindowComponent.showWindow(obj);
+        return WindowComponent.showWindow(obj);
     }
 
-    /**
-     * 防抖
-     * @param  {Function} f 回调
-     * @param  {number=3000} t 防抖时延
-     */
-    debounce(f: Function, t: number = 3000) {
-        const o = <any>this.debounce;
-        clearTimeout(o.timer);
-        o.timer = setTimeout(() => {
-            f();
-        }, t)
-    }
 }
