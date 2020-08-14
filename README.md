@@ -32,7 +32,7 @@ Vue.component(ZEditor.name, ZEditor)
     'z-editor': ZEditor
   }
 })
-export default class NameComponent {
+export default class NameComponent extends Vue{
   //...
 }
 ```
@@ -108,7 +108,7 @@ uploadFile(obj: {
   // 上传失败
   close(false);
   // 上传超时
-  const t = 3000; // 超时时间ms
+  const t = 3000; // 超时时间（单位ms）
   close(false, t);
 }
 
@@ -145,6 +145,7 @@ PC端标准浏览器和IE9+.
 
 ## Concat
 
+QQ交流群：486273737  
 Name:  木懵の狗纸  
-QQ: 1029512956  
+个人QQ: 1029512956  
 Email: 1029512956@qq.com  
