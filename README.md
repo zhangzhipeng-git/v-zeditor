@@ -2,7 +2,7 @@
 
 ## Description
 
-一款简单、小清新的编辑器
+一款简单、小清新的编辑器[传送门（请在PC端打开）](https://zzp-dog.github.io/zeditor/test/dist/index.html). 
 
 ## UI
 
