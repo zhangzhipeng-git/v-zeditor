@@ -1,15 +1,14 @@
 /*
- * Project: d:\ZX_WORK\FRONTEND\vue\nuxt-ssr
- * File: d:\ZX_WORK\FRONTEND\vue\nuxt-ssr\core\modules\components\commons\editor\editor.ts
- * Created Date: Saturday, February 22nd 2020, 8:16:01 pm
- * Author: 张志鹏
+ * Project: d:\ZX_WORK\MY_NPM\ZEditor
+ * File: d:\ZX_WORK\MY_NPM\ZEditor\editor\_alert\tip\tip.ts
+ * Created Date: Wednesday, August 5th 2020, 11:37:19 pm
+ * Author: zzp
  * Contact: 1029512956@qq.com
- * Description: 富文本编辑器
- * Last Modified: Sunday August 2nd 2020 5:49:29 pm
- * Modified By: 张志鹏
+ * Description: 编辑器组件脚本
+ * Last Modified: Friday August 14th 2020 10:50:54 pm
+ * Modified By: zzp
  * Copyright (c) 2020 ZXWORK
  */
-
 import Vue from "vue";
 import { Prop, Model, Ref, Watch } from "vue-property-decorator";
 import Component from "vue-class-component";
@@ -755,7 +754,7 @@ export default class EditorComponent extends Vue {
             arg0 = 300;
         }
         this.setRange();
-        CommonUtil.debounce(() => {
+        this.debounce(() => {
             const innerHTML = this.pannel.innerHTML;
             if (this.vhtml$ === innerHTML) return;
             // 有内容时才保存到本地
@@ -863,6 +862,20 @@ export default class EditorComponent extends Vue {
      */
     alert(obj: WindowOptions) {
         return WindowComponent.showWindow(obj);
+    }
+
+    
+    /**
+     * 防抖
+     * @param  {Function} f 回调
+     * @param  {number=300} t? 防抖时延 默认300ms
+     */
+    debounce(f: Function, t: number = 300) {
+        const o = <any>this.debounce;
+        clearTimeout(o.timer);
+        o.timer = setTimeout(() => {
+            f();
+        }, t)
     }
 
 }

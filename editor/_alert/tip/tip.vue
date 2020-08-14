@@ -1,11 +1,15 @@
-<!--
- * @Author: your name
- * @Date: 2020-01-02 18:34:01
- * @LastEditTime : 2020-01-09 19:28:55
- * @LastEditors  : Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \nuxt-ssr\components\commons\alert\tip\tip.vue
- -->
+
+/*
+ * Project: d:\ZX_WORK\MY_NPM\ZEditor
+ * File: d:\ZX_WORK\MY_NPM\ZEditor\editor\_alert\tip\tip.ts
+ * Created Date: Wednesday, August 5th 2020, 11:37:19 pm
+ * Author: zzp
+ * Contact: 1029512956@qq.com
+ * Description: toast组件脚本
+ * Last Modified: Friday August 14th 2020 10:50:54 pm
+ * Modified By: zzp
+ * Copyright (c) 2020 ZXWORK
+ */
 <template>
   <div id="z-editor-tip" class="z-editor-alert">
     <div class="wd-mask"></div>

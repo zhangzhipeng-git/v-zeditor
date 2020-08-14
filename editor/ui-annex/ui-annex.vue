@@ -1,12 +1,12 @@
 /*
- * Project: d:\ZX_WORK\FRONTEND\vue\nuxt-ssr
- * File: d:\ZX_WORK\FRONTEND\vue\nuxt-ssr\core\modules\components\commons\editor\ui-annex\ui-annex.ts
- * Created Date: Saturday, February 22nd 2020, 8:16:01 pm
- * Author: 张志鹏
+ * Project: d:\ZX_WORK\MY_NPM\ZEditor
+ * File: d:\ZX_WORK\MY_NPM\ZEditor\editor\_alert\tip\tip.ts
+ * Created Date: Wednesday, August 5th 2020, 11:37:19 pm
+ * Author: zzp
  * Contact: 1029512956@qq.com
- * Description: 上传文件弹出层
- * Last Modified: Sunday August 2nd 2020 7:17:07 pm
- * Modified By: 张志鹏
+ * Description: 插入文件组件模板
+ * Last Modified: Friday August 14th 2020 10:50:54 pm
+ * Modified By: zzp
  * Copyright (c) 2020 ZXWORK
  */
 <template>

@@ -1,12 +1,15 @@
 {
   "name": "@bigbigbird/zeditor",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "a simple editor",
   "main": "dist/index.min.js",
   "scripts": {
-    "webpack": "webpack",
-    "webpack:publish": "npm run webpack && npm publish",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack-dev-server --config webpack.config.dev.js",
+    "build:test": "webpack --config webpack.config.test.js",
+    "build:chunk": "webpack --config webpack.config.pro.js",
+    "build:part": "webpack --config webpack.config.part.js",
+    "build": "npm run build:chunk && npm run build:part",
+    "publish": "npm publish"
   },
   "keywords": [
     "editor",
@@ -23,6 +26,7 @@
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^4.2.0",
+    "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.3",
@@ -33,6 +37,7 @@
     "vue-loader": "^15.9.3",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }

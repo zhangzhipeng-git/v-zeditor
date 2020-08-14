@@ -1,12 +1,12 @@
 /*
- * Project: d:\ZX_WORK\FRONTEND\vue\nuxt-ssr
- * File: d:\ZX_WORK\FRONTEND\vue\nuxt-ssr\core\modules\components\commons\editor\util\Cursor.ts
- * Created Date: Tuesday, August 4th 2020, 7:59:26 pm
- * Author: 张志鹏
+ * Project: d:\ZX_WORK\MY_NPM\ZEditor
+ * File: d:\ZX_WORK\MY_NPM\ZEditor\editor\_alert\tip\tip.ts
+ * Created Date: Wednesday, August 5th 2020, 11:37:19 pm
+ * Author: zzp
  * Contact: 1029512956@qq.com
- * Description: 光标操作工具类
- * Last Modified: Tuesday August 4th 2020 7:59:53 pm
- * Modified By: 张志鹏
+ * Description: 光标工具类
+ * Last Modified: Friday August 14th 2020 10:50:54 pm
+ * Modified By: zzp
  * Copyright (c) 2020 ZXWORK
  */
 /** 旧标准Range对象（只列出常用的一些属性和方法） */

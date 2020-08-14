@@ -1,14 +1,17 @@
 /*
- * Filename: d:\frontend\vue\nuxt-ssr\components\commons\editor\editor.vue
- * Path: d:\frontend\vue\nuxt-ssr
- * Created Date: Sunday, December 29th 2019, 4:54:29 pm
- * Author: zzp-dog
- * 富文本编辑器
- * Copyright (c) 2019 Your Company
+ * Project: d:\ZX_WORK\MY_NPM\ZEditor
+ * File: d:\ZX_WORK\MY_NPM\ZEditor\editor\_alert\tip\tip.ts
+ * Created Date: Wednesday, August 5th 2020, 11:37:19 pm
+ * Author: zzp
+ * Contact: 1029512956@qq.com
+ * Description: 编辑器组件模板
+ * Last Modified: Friday August 14th 2020 10:50:54 pm
+ * Modified By: zzp
+ * Copyright (c) 2020 ZXWORK
  */
 <template>
   <div :class="theme">
-    <div class="wd-editor" ref="editor" @click="hideSwitchPannel($event)">
+    <div class="z-editor" ref="editor" @click="hideSwitchPannel($event)">
       <!-- 编辑条开始 -->
       <div class="wd-editor-bar fn-clearfix" ref="header">
         <!-- 事件执行富文本命令[失焦时，命令执行无效，所以要阻止失焦，或者在事件执行前聚焦] -->
@@ -345,3 +348,4 @@
   </div>
 </template>
 <script lang="ts" src="./index.ts"></script>
+<style lang="scss" src="./index.scss"></style>

@@ -1,6 +1,10 @@
 node_modules/
 editor/
-webpack.config.js
+test/
+webpack.config.pro.js
+webpack.config.part.js
+webpack.config.dev.js
+webpack.config.test.js
 design/
 _site/
 *.bak

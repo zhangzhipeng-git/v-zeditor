@@ -1,3 +1,15 @@
+/*
+ * Project: d:\ZX_WORK\MY_NPM\ZEditor
+ * File: d:\ZX_WORK\MY_NPM\ZEditor\webpack.config.part.js
+ * Created Date: Friday, August 14th 2020, 10:10:49 pm
+ * Author: zzp
+ * Contact: 1029512956@qq.com
+ * Description: （生产）分开打包，js和css独立
+ * Last Modified: Friday August 14th 2020 10:41:33 pm
+ * Modified By: zzp
+ * Copyright (c) 2020 ZXWORK
+ */
+
 const path = require('path');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
@@ -9,14 +21,14 @@ module.exports = {
         index: './editor/index.vue',
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'part'),
         filename: '[name].min.js',
         library: 'ZEditor',   // 模块的名字
         libraryTarget: 'umd', // 通用模块定义规范，兼容root commonjs， amd
         umdNamedDefine: true  // 对umd中的amd模块进行命名，否则使用匿名的define
     },
     resolve: {
-        extensions: ['.vue', '.ts']
+        extensions: ['.vue', '.ts', '.js']
     },
     externals: {
         'vue': 'commonjs vue',
@@ -32,8 +44,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    'style-loader',
-                    // MiniCssExtractPlugin.loader, // 不抽离css 
+                    MiniCssExtractPlugin.loader, // 抽离css
                     'css-loader',
                     'sass-loader'
                 ]
@@ -53,10 +64,10 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(), // 清理目录
         new VueLoaderPlugin(), // vue-loader 1.5后都需要这个插件
-        // new MiniCssExtractPlugin({
-        //     filename: '[name].css',
-        //     chunkFilename: '[id].css',
-        // }),
+        new MiniCssExtractPlugin({
+            filename: '[name].min.css', // 同步
+            // chunkFilename: '[id].css', // 异步
+        }),
     ],
     optimization: {
         minimize: true,

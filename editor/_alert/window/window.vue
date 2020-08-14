@@ -1,11 +1,15 @@
-<!--
- * @Author: your name
- * @Date: 2020-01-04 13:50:20
- * @LastEditTime : 2020-01-05 20:00:21
- * @LastEditors  : Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \nuxt-ssr\components\commons\alert\window\window.vue
- -->
+
+/*
+ * Project: d:\ZX_WORK\MY_NPM\ZEditor
+ * File: d:\ZX_WORK\MY_NPM\ZEditor\editor\_alert\tip\tip.ts
+ * Created Date: Wednesday, August 5th 2020, 11:37:19 pm
+ * Author: zzp
+ * Contact: 1029512956@qq.com
+ * Description: 弹窗组件模板
+ * Last Modified: Friday August 14th 2020 10:50:54 pm
+ * Modified By: zzp
+ * Copyright (c) 2020 ZXWORK
+ */
 <template>
   <div id="z-editor-window" class="z-editor-alert" :class="theme">
     <div class="wd-mask" ref="mask"></div>

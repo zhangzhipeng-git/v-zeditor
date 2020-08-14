@@ -18,6 +18,9 @@ npm install @bigbigbird/zeditor -S
 
 ## Quick Start
 
+dist目录是js和css捆绑在一起的  
+part目录是js和css分离的
+
 ``` typescript
 import Vue from 'vue'
 import ZEditor from '@bigbigbird/zeditor'
