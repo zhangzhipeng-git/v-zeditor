@@ -29,7 +29,7 @@ Vue.component(ZEditor.name, ZEditor)
     'z-editor': ZEditor
   }
 })
-export default class NameComponent {
+export default class NameComponent extends Vue{
   //...
 }
 ```
