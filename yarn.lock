@@ -2,6 +2,15 @@
 # yarn lockfile v1
 
 
+"@bigbigbird/zeditor@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.npm.taobao.org/@bigbigbird/zeditor/download/@bigbigbird/zeditor-1.0.10.tgz#fedf1bd8939c89d59b8cef7cbe81c2cde9e19dec"
+  integrity sha1-/t8b2JOcidWbjO98voHCzenhnew=
+  dependencies:
+    vue "^2.6.11"
+    vue-class-component "^7.2.5"
+    vue-property-decorator "^9.0.0"
+
 "@npmcli/move-file@^1.0.1":
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/@npmcli/move-file/download/@npmcli/move-file-1.0.1.tgz?cache=0&sync_timestamp=1591142965873&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40npmcli%2Fmove-file%2Fdownload%2F%40npmcli%2Fmove-file-1.0.1.tgz#de103070dac0f48ce49cf6693c23af59c0f70464"

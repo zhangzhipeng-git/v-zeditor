@@ -328,6 +328,7 @@
 
       <div
         ref="pannel"
+        @keyup="setRange"
         @click="pannelOnClick"
         @keydown="keydown($event)"
         @blur="isInEditStatus=false"

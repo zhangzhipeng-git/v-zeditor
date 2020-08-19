@@ -65,6 +65,7 @@ export default class WindowComponent extends Vue {
         // 移除
         setTimeout(() => {
             document.body.removeChild(this.$el);
+            this.$destroy();
             const close = this.callback.close;
             close && close(e);
 

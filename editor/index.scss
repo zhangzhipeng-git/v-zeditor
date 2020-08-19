@@ -98,7 +98,7 @@
         }
 
         // 图标
-        i.z-editor-icomoon {
+        .z-editor-icomoon {
             font-size: $font-size-small;
         }
     }
@@ -126,12 +126,19 @@
     .formatBlock .wd-edit-link {
         width: 3rem;
     }
-
     // 编辑项 - a标签聚焦
     .wd-edit-link-active {
         background-color: $gray-light-m;
     }
-
+    // 字样，块标签，前景色，背景色的下拉箭头
+    .fontSize,
+    .formatBlock,
+    .foreColor,
+    .backColor {
+        i {
+            margin-left: 0.5rem;
+        }
+    }
     // 面板列表
     .wd-font-name-list,
     .wd-font-size-list,

@@ -1,6 +1,6 @@
 {
   "name": "@bigbigbird/zeditor",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "a simple editor",
   "main": "dist/index.min.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "vue-property-decorator": "^9.0.0"
   },
   "devDependencies": {
+    "@bigbigbird/zeditor": "^1.0.10",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^4.2.0",
     "html-webpack-plugin": "^4.3.0",

@@ -178,13 +178,13 @@ export default class UIAnnexComponent extends Vue {
         let html = '';
         switch (this.type) {
             case "image":
-                html = this.getImageHTML(this.url);
+                html = this.getImageHTML(src);
                 break;
             case "audio":
-                html = this.getAudioHTML(this.url);
+                html = this.getAudioHTML(src);
                 break;
             case "video":
-                html = this.getVideoHTML(this.url);
+                html = this.getVideoHTML(src);
                 break;
         }
         return html;

@@ -82,7 +82,7 @@ input(innerHTML: string) {
 
 // 前提hasBtn传入true
 // 点击提交按钮事件 @recieveContent="recieveContent($event)"
-input(obj: {
+recieveContent(obj: {
   innerHTML: string;
   innerText: string,
   {

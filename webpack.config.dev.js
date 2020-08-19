@@ -75,7 +75,6 @@ module.exports = {
             sourceMap: false,
             terserOptions: {
                 compress: {
-                    pure_funcs: ["console.log"]
                 }
             }
         })],

@@ -53,7 +53,7 @@ export default class UILinkComponent extends Vue {
             return;
         }
         let html =
-            '<a style="text-decoration:underline;" href="' +
+            '<a href="' +
             this.url +
             '" ' +
             (this.checked ? 'target="_blank"' : "") +
