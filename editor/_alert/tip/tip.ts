@@ -18,6 +18,8 @@ import Component from 'vue-class-component';
 export default class TipComponent extends Vue {
     /** active - true 执行进入动画，false 执行离开动画 */
     active: boolean = false;
+    /** 是否准备要进入激活状态 */
+    ready: boolean = false;
     text: string = '';
     enter: number = 0;
     leave: number = 0;
@@ -34,6 +36,7 @@ export default class TipComponent extends Vue {
         // 离开
         const t1 = setTimeout(() => {
             clearTimeout(t1);
+            this.ready = false;
             this.active = false;
         }, this.enter + this.duration);
         // 彻底移除
@@ -56,6 +59,7 @@ export default class TipComponent extends Vue {
         this.animation = (<any>options).animation;
         document.body.appendChild(this.$el);
         // 延时激活，防止进入动画不生效
+        this.ready = true;
         const t = setTimeout(() => { clearTimeout(t); this.active = true; });
         // 非手动关闭，在指定时间后关闭
         if (this.duration !== -1 && this.duration !== Infinity) { this.close(); }

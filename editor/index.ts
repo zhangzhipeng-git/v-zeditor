@@ -64,7 +64,7 @@ export default class EditorComponent extends Vue {
     /** 颜色 */
     colors = [["#ffffff", "#000000", "#eeece1", "#1f497d", "#4f81bd", "#c0504d", "#9bbb59", "#8064a2", "#4bacc6", "#f79646"], ["#f2f2f2", "#7f7f7f", "#ddd9c3", "#c6d9f0", "#dbe5f1", "#f2dcdb", "#ebf1dd", "#e5e0ec", "#dbeef3", "#fdeada"], ["#d8d8d8", "#595959", "#c4bd97", "#8db3e2", "#b8cce4", "#e5b9b7", "#d7e3bc", "#ccc1d9", "#b7dde8", "#fbd5b5"], ["#bfbfbf", "#3f3f3f", "#938953", "#548dd4", "#95b3d7", "#d99694", "#c3d69b", "#b2a2c7", "#92cddc", "#fac08f"], ["#a5a5a5", "#262626", "#494429", "#17365d", "#366092", "#953734", "#76923c", "#5f497a", "#31859b", "#e36c09"], ["#7f7f7f", "#0c0c0c", "#1d1b10", "#0f243e", "#244061", "#632423", "#4f6128", "#3f3151", "#205867", "#974806"], ["#c00000", "#ff0000", "#ffc000", "#ffff00", "#92d050", "#00b050", "#00b0f0", "#0070c0", "#002060", "#7030a0"]];
     /** 字体大小 */
-    fontSizes = [{ key: "xx-small", value: "1", value$: 9 / 16 }, { key: "x-small", value: "2", value$: 10 / 16 }, { key: "small", value: "3", value$: 12 / 16 /** 13/16调整为12/16 */ }, { key: "medium", value: "4", value$: 16 / 16 }, { key: "large", value: "5", value$: 18 / 16 }, { key: "x-large", value: "6", value$: 24 / 16 }, { key: "xx-large", value: "7", value$: 32 / 16 }];
+    fontSizes = [{ key: "xx-small", value: "1", value$: 9 / 16 }, { key: "x-small", value: "2", value$: 10 / 16 }, { key: "small", value: "3", value$: 'inherit' /** 13/16调整为“inherit” */ }, { key: "medium", value: "4", value$: 16 / 16 }, { key: "large", value: "5", value$: 18 / 16 }, { key: "x-large", value: "6", value$: 24 / 16 }, { key: "xx-large", value: "7", value$: 32 / 16 }];
     /** code */
     codes = ['Html', 'Css', 'Js', 'TypeScript', 'Sass', 'Java', 'Xml', 'Sql', 'Shell'];
     /** 选中的字样 */
@@ -187,13 +187,7 @@ export default class EditorComponent extends Vue {
         if (recover) {
             this.recoverRange();
         }
-        // 面板处于编辑状态中
-        if (this.isInEditStatus) {
-            return;
-        }
-        this.setHistoryFormat();
-        // 标记面板处于编辑状态之中
-        this.isInEditStatus = true
+        this.initEdit();
     }
 
     /**
@@ -209,20 +203,38 @@ export default class EditorComponent extends Vue {
     }
 
     /**
-     * 设置历史格式
+     * 编辑初始化
      */
-    setHistoryFormat() {
-        // 在代码区不设置文本格式
-        if (this.isRangeInCode()) return;
+    initEdit() {
+        // 在编辑状态不再次进行初始化
+        if (this.isInEditStatus) {
+            return;
+        }
+        // 标记面板处于编辑状态
+        if (!this.isInEditStatus) {
+            this.isInEditStatus = true;
+        }
+
         // 设置历史格式
+        // 在代码区不设置历史格式
+        if (this.isRangeInCode()) {
+            return;
+        }
+        // 如果光标周围有内容则不设置历史格式
+        const el = CursorUtil.getRangeCommonParent();
+        if (el.nodeType === 3) {
+            return;
+        }
         this.cmd('formatBlock', false, this.formatBlock);
-        //如果编辑器内没有文本标签，文字对齐命令不能第一个执行，
+        // 如果编辑器内没有文本标签，文字对齐命令不能第一个执行
         // 否则会将光标设到下一个文本标签内
         this.cmd(this.justifyActive, false);
         this.cmd("fontName", false, this.fontFamily.value);
-        this.cmd("fontSize", false, this.fontSize.value);
         this.cmd("foreColor", false, this.foreColor);
         this.cmd("backColor", false, this.backColor);
+        this.cmd('fontSize', false, this.fontSize.value);
+        // 对设置字体大小做特殊处理
+        this.adjustFontSizeWithStyle(this.fontSize);
     }
 
     /**
@@ -261,9 +273,10 @@ export default class EditorComponent extends Vue {
     adjustFontSizeWithStyle(fontSize: { value: number, value$: string }) {
         const el = <HTMLElement>CursorUtil.getRangeCommonParent();
         const fonts = CommonUtil.parent(el, 2).querySelectorAll(`font[size="${fontSize.value}"]`);
+        const value$ = fontSize.value$;
         Array.prototype.forEach.call(fonts, font => {
-            font.size = '';
-            font.style.fontSize = fontSize.value$ + 'rem';
+            (<HTMLElement>font).removeAttribute('size');
+            font.style.fontSize = value$ === 'inherit'? 'inherit':fontSize.value$ + 'rem';
         });
     }
 
@@ -326,13 +339,14 @@ export default class EditorComponent extends Vue {
         const index = e.target.getAttribute('data-index');
         if (index === null) return;
         this.code = this.codes[index];
-        const id = new Date().getTime() + '';
         const code = this.code.toLowerCase();
-        let html = `<p><br/></p><pre style="white-space: pre" title="代码区"><code class="${code}"><p id="${id}"><br/></p></code></pre><p><br/></p>`;
+        let html = `<p><br/></p><pre style="white-space: pre" title="代码区"><code class="${code}"><p><br/></p></code></pre><p><br/></p>`;
         this.removeFormat();
         this.cmd('insertHTML', false, html);
+        const pel = CursorUtil.getRangeCommonParent();
+        const box = CommonUtil.preSibling(pel) as any;
         // 插入html后，将光标移至代码区的p标签中
-        CursorUtil.setRangeToElement(<any>CommonUtil.id(id), true);
+        CursorUtil.setRangeToElement(box.children[0].children[0], true);
         this.setRange(); // 手动设置一下
     }
 
@@ -478,6 +492,10 @@ export default class EditorComponent extends Vue {
     recieveLinkHTML(html: string) {
         this.startEdit();
         this.cmd('insertHTML', false, html);
+        const el = <HTMLElement>CursorUtil.getRangeCommonParent().parentNode;
+        if (el.style) {
+            el.removeAttribute('style');
+        }
         return true;
     }
 
@@ -717,14 +735,7 @@ export default class EditorComponent extends Vue {
      * 点击面板
      */
     pannelOnClick() {
-        // 如果有内容则不设置历史格式
-        if (!this.pannel.innerText && !this.pannel.textContent) {
-            this.setHistoryFormat();
-        }
-        // 如果未聚焦则标记聚焦
-        if (!this.isInEditStatus) {
-            this.isInEditStatus = true;
-        }
+        this.initEdit();
         this.setRange();
     }
 

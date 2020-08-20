@@ -15,7 +15,7 @@
     <div class="wd-mask"></div>
     <!-- active - true 执行进入动画，false 执行离开动画 -->
     <p
-      :style="{transition:  'all ' + (active?enter:leave)/1000 + 's'}"
+      :style="{transition:  'all ' + (ready?enter:leave)/1000 + 's'}"
       :class="[(animation === 'scale'?'wd-tip-for-scale':'wd-tip'),animation+'-enter', animation+ (active?'-active':'-leave')]"
     ><i v-if="duration < 0 || duration === Infinity" class="z-editor-icomoon icon-loader"></i>{{text}}</p>
   </div>

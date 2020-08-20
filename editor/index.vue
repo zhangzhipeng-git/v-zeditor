@@ -17,8 +17,8 @@
         <!-- 事件执行富文本命令[失焦时，命令执行无效，所以要阻止失焦，或者在事件执行前聚焦] -->
         <!-- 备注!!!! -->
         <!-- mousedown事件在自身聚焦之前[即其他元素失焦聚焦之前]执行 -->
-        <!-- 下面使用mousedown事件是因为可以使用e.preventDefault()阻止默认事件[聚焦]，阻止编辑面板失焦 -->
-        <!-- 而针对必定要失焦的情况（如点击了编辑器之外的元素[除了a标签元素]），则采用记住光标，再设置上次记住的光标的方式来做到伪失焦。 -->
+        <!-- 下面使用mousedown事件是因为可以使用e.preventDefault()阻止默认事件，阻止编辑面板失焦 -->
+        <!-- 而针对必定要失焦的情况，则采用记住光标，再设置上次记住的光标的方式来做到伪失焦。 -->
         <!-- 字体 -->
         <div ref="fontName" class="wd-edit-link-box fontName" @mousedown="setFontName($event)">
           <a data-tip="字体" class="wd-edit-link" href="javascript:void 0">

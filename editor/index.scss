@@ -13,7 +13,6 @@
 @import "./css/common";
 // 引入字体图标
 @import "./css/style";
-
 // _theme 依赖的主题
 @import "./_theme/theme";
 // _alert 依赖弹窗
@@ -26,7 +25,6 @@
 @import "./ui-table/ui-table";
 // ui-image 插入image的弹窗样式
 @import "./ui-annex/ui-annex";
-
 .z-editor {
     text-align: left;
     background-color: $white;
@@ -45,13 +43,11 @@
         border-top: 1px solid $gray-light-m;
         border-bottom: 1px solid $gray-light-m;
     }
-
     // 承载a标签
     .wd-edit-link-box {
         position: relative;
         float:left;
     }
-
     // 编辑项 - a标签，icon容器
     .wd-edit-link {
         display: inline-block;
@@ -62,11 +58,9 @@
         border-radius: 0.2rem;
         text-align: center;
         cursor: pointer;
-
         &:hover {
             background-color: $gray-light-m;
         }
-
         &:hover:before {
             content: "";
             position: absolute;
@@ -79,7 +73,6 @@
             border-bottom-color: #222222;
             transform: translateX(-50%);
         }
-
         &:hover:after {
             content: attr(data-tip);
             opacity: 0.8;
@@ -96,18 +89,15 @@
             transform: translateX(-50%);
             border-radius: 0.3rem;
         }
-
         // 图标
         .z-editor-icomoon {
             font-size: $font-size-small;
         }
     }
-
-    // 字样下拉域
+    // 字样下拉菜单
     .fontName .wd-edit-link {
         width: 6.2rem;
         text-align: left;
-
         // 下箭头icon固定在右侧
         i {
             display: inline-block;
@@ -116,12 +106,10 @@
             line-height: 1.7rem;
         }
     }
-
     // 字号下拉域
     .fontSize .wd-edit-link {
         width: 6rem;
     }
-
     // 文本格式下拉域
     .formatBlock .wd-edit-link {
         width: 3rem;
@@ -150,7 +138,6 @@
         color: $white;
         background-color: #222222;
         border-radius: 0.3rem;
-
         a {
             display: inline-block;
             width: 100%;
@@ -163,7 +150,6 @@
             }
         }
     }
-
     // 颜色面板列表
     .wd-color-list {
         position: absolute;
@@ -201,17 +187,14 @@
             }
         }
     }
-
     // 字样列表
     .wd-font-name-list {
         width: 8rem;
     }
-
     // 字号列表
     .wd-font-size-list {
         width: 10rem;
     }
-
     // 文本格式列表
     .wd-format-block-list {
         width: 3rem;
@@ -220,14 +203,12 @@
     .wd-code-list {
         width: 6rem;
     }
-
     // 字色域和高亮色域icon底部边框颜色
     .foreColor .icon-font-color,
     .backColor .icon-pencil {
         display: inline-block;
         border-bottom: 2px solid transparent;
     }
-
     // 输入区 contenteditable="true"
     .wd-deitor-content {
         outline: none;
@@ -248,27 +229,22 @@
         ol {
             list-style-position: inside;
         }
-
         // 无序列表
         ul li {
             list-style-type: disc;
         }
-
         // 有序列表
         ol li {
             list-style-type: decimal;
         }
-
         // 超链接
         a {
             text-decoration: underline;
         }
-
         // table
         table {
             width: 100%;
         }
-
         // table列
         td {
             min-width: 4rem;

@@ -23,7 +23,7 @@
         <div class="wd-window-tool" @mousedown="start" @tragstart="tragstart">
           <h3>{{title}}</h3>
           <p>
-            <!-- isScale true-显示放大缩小，flase-不显示放大缩小,_isScale同isScale兼容方式2 -->
+            <!-- isScale true-false-不显示放大缩小,_isScale同isScale兼容方式2 -->
             <i
               v-if="isScale"
               @click="switchSize"

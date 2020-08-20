@@ -1,6 +1,6 @@
 {
   "name": "@bigbigbird/zeditor",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "a simple editor",
   "main": "dist/index.min.js",
   "scripts": {
@@ -8,8 +8,7 @@
     "build:test": "webpack --config webpack.config.test.js",
     "build:chunk": "webpack --config webpack.config.pro.js",
     "build:part": "webpack --config webpack.config.part.js",
-    "build": "npm run build:chunk && npm run build:part",
-    "publish": "npm publish"
+    "build": "npm run build:chunk && npm run build:part"
   },
   "keywords": [
     "editor",

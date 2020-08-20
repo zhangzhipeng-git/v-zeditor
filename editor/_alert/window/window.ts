@@ -78,10 +78,6 @@ export default class WindowComponent extends Vue {
     open() {
         (<any>this.$refs.mask).style.display = 'block';
         document.body.appendChild(this.$el);
-        // 设置打开时的渐变
-        this.window.style.transition = 'all ' + this.enter / 1000 + 's';
-        // 进入激活状态，添加静止时类
-        this.active = true;
         // 左右居中，top用css控制
         const w = this.window.offsetWidth;
         const h = this.window.offsetHeight;
@@ -92,6 +88,10 @@ export default class WindowComponent extends Vue {
         this.window.style.cssText += leftStyle;
         // 记录最小化时的样式
         this.window._minStyle = leftStyle + 'width:' + (w + 1) + 'px;height:' + (h + 1) + 'px;';
+        // 设置打开时的渐变
+        this.window.style.transition = 'all ' + this.enter / 1000 + 's';
+        // 进入激活状态，添加静止时类
+        setTimeout(() => this.active = true);
         // 取消渐变，否则移动会有渐变
         setTimeout(() => {
             this.window.style.transition = 'none';

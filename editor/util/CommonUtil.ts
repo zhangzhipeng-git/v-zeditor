@@ -21,11 +21,13 @@ export default class CommonUtil {
     }
 
     /**
-     * 根据id找元素
-     * @param id id
+     * 找上一个节点
+     * @param node 节点
      */
-    static id(id: string): HTMLElement | null {
-        return document.getElementById(id);
+    static preSibling(node: Node): Node {
+        let pre = node;
+        while ((pre = <any>pre.previousSibling) && pre.nodeType !== 1);
+        return pre;
     }
 
     /**
