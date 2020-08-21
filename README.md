@@ -99,18 +99,18 @@ recieveContent(obj: {
 
 // 文件上传事件 @uploadFile="uploadFile($event)"
 uploadFile(obj: {
-  type: 'image' | 'audio' | 'video', file: any, close: (v: string | boolean, t?: number) => void
+  type: 'image' | 'audio' | 'video', file: any, callback: (v: string | boolean, t?: number) => void
 }) {
-  const close = obj.close;
+  const callback = obj.callback;
   // 关闭弹窗
   // 上传成功
   const src = 'http://www.example.com';
-  close(src);
+  callback(src);
   // 上传失败
-  close(false);
+  // callback(false);
   // 上传超时
-  const t = 3000; // 超时时间（单位ms）
-  close(false, t);
+  // const t = 3000; // 超时时间（单位ms）
+  // callback(false, t);
 }
 
 /** events-end */

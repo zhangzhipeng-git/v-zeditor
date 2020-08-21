@@ -174,7 +174,7 @@ export default class UIAnnexComponent extends Vue {
      * 传入src并根据类型获取文件html
      * @param  {string} src
      */
-    getFileHTML(src: string) {
+    getFileHTML = (src: string) => {
         let html = '';
         switch (this.type) {
             case "image":
