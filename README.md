@@ -51,7 +51,7 @@ hasBtn: boolean = false;
 theme: 'r'|'g'|'b'|'p' = '';
 
 // 参数配置，默认为下面这个
-options: Object = {
+options: object = {
   // 编辑内容的最大字节数
   maxsize: 65535,
   image: {
@@ -72,7 +72,7 @@ options: Object = {
     /** 小于指定字节数会进行base64编码 */
     base64: 0
   }
-}
+};
 
 /** props-end */
 
@@ -86,24 +86,22 @@ input(innerHTML: string) {
 // 前提hasBtn传入true
 // 点击提交按钮事件 @recieveContent="recieveContent($event)"
 recieveContent(obj: {
-  innerHTML: string;
+  innerHTML: string,
   innerText: string,
-  {
+  media: {
     image: { type: 'url'|'base64', src: string},
     audio: { type: 'url'|'base64', src: string},
     video: { type: 'url'|'base64', src: string},
   }
 }) {
-  //...
+  console.log(obj);
 }
 
 // 文件上传事件 @uploadFile="uploadFile($event)"
 uploadFile(obj: {
-  type: 'image' | 'audio' | 'video', file: any, close: Function
+  type: 'image' | 'audio' | 'video', file: any, close: (v: string | boolean, t?: number) => void
 }) {
-  // type 文件类型
-  // file 文件
-
+  const close = obj.close;
   // 关闭弹窗
   // 上传成功
   const src = 'http://www.example.com';

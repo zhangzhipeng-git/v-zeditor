@@ -1,6 +1,7 @@
 node_modules/
 editor/
 test/
+src/
 webpack.config.pro.js
 webpack.config.part.js
 webpack.config.dev.js
