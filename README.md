@@ -4,8 +4,8 @@
 
 一款简单、小清新的编辑器  
 
-[在线演示](https://zzp-dog.github.io/zeditor/test/dist/index.html)  
-[github](https://github.com/zzp-dog/zeditor)  
+[在线演示](https://zzp-dog.github.io/v-zeditor/test/dist/index.html)  
+[github](https://github.com/zzp-dog/v-zeditor)  
 
 ## UI
 

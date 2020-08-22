@@ -1,14 +1,15 @@
 /*
- * Project: d:\ZX_WORK\MY_NPM\ZEditor
- * File: d:\ZX_WORK\MY_NPM\ZEditor\editor\_alert\tip\tip.ts
- * Created Date: Wednesday, August 5th 2020, 11:37:19 pm
- * Author: zzp
- * Contact: 1029512956@qq.com
+ * Created Date: Saturday, August 8th 2020, 6:58:46 pm
+ * Author: 木懵の狗纸
+ * ---------------------------------------------------
  * Description: 编辑器组件脚本
- * Last Modified: Friday August 14th 2020 10:50:54 pm
- * Modified By: zzp
+ * ---------------------------------------------------
+ * Last Modified: Saturday August 22nd 2020 7:08:40 pm
+ * Modified By: 木懵の狗纸
+ * Contact: 1029512956@qq.com
  * Copyright (c) 2020 ZXWORK
  */
+
 import Vue from "vue";
 import { Prop, Model, Ref, Watch } from "vue-property-decorator";
 import Component from "vue-class-component";

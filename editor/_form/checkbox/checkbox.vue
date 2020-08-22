@@ -1,15 +1,16 @@
 
 /*
- * Project: d:\ZX_WORK\MY_NPM\ZEditor
- * File: d:\ZX_WORK\MY_NPM\ZEditor\editor\_alert\tip\tip.ts
  * Created Date: Wednesday, August 5th 2020, 11:37:19 pm
- * Author: zzp
- * Contact: 1029512956@qq.com
+ * Author: 木懵の狗纸
+ * ---------------------------------------------------
  * Description: 复选框组件模板
- * Last Modified: Friday August 14th 2020 10:50:54 pm
- * Modified By: zzp
+ * ---------------------------------------------------
+ * Last Modified: Saturday August 22nd 2020 7:06:28 pm
+ * Modified By: 木懵の狗纸
+ * Contact: 1029512956@qq.com
  * Copyright (c) 2020 ZXWORK
  */
+
 <template>
   <label class="z-editor-checkbox">
     <input
