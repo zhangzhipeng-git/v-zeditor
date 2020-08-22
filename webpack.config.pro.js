@@ -1,14 +1,15 @@
 /*
- * Project: d:\ZX_WORK\MY_NPM\ZEditor
- * File: d:\ZX_WORK\MY_NPM\ZEditor\webpack.config.pro.js
  * Created Date: Wednesday, August 5th 2020, 11:36:18 pm
- * Author: zzp
+ * Author: 木懵の狗纸
+ * ---------------------------------------------------
+ * Description: 生产）合并打包，js和css在一起 
+ * ---------------------------------------------------
+ * Last Modified: Saturday August 22nd 2020 7:57:55 pm
+ * Modified By: 木懵の狗纸
  * Contact: 1029512956@qq.com
- * Description: （生产）合并打包，js和css在一起 
- * Last Modified: Friday August 14th 2020 10:44:06 pm
- * Modified By: zzp
  * Copyright (c) 2020 ZXWORK
  */
+
 
 const path = require('path');
 const TerserJSPlugin = require('terser-webpack-plugin');
