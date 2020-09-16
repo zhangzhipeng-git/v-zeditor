@@ -1,6 +1,6 @@
 {
   "name": "@bigbigbird/zeditor",
-  "version": "1.0.14",
+  "version": "2.0.0",
   "description": "a simple editor",
   "main": "dist/index.min.js",
   "scripts": {
