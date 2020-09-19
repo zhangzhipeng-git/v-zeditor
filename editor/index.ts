@@ -71,7 +71,7 @@ export default class EditorComponent extends Vue {
     /** 选中的字样 */
     fontFamily: {key: string, value: string} = { key: "微软雅黑", value: "Microsoft Yahei" };
     /** 选中的字号 */
-    fontSize: any = { key: "small", value: 3 }; // 默认1rem;
+    fontSize: any = { key: "small", value: 3, value$: '' }; // 默认1rem;
     /** 文本格式 */
     formatBlock = "p";
     /** 字体颜色 */
@@ -235,9 +235,7 @@ export default class EditorComponent extends Vue {
         this.cmd("foreColor", false, this.foreColor);
         this.cmd("backColor", false, this.backColor);
         // css中font-size默认是.75rem
-        if (this.fontSize.value !== '')this.cmd('fontSize', false, this.fontSize.value);
-        // 对设置字体大小做特殊处理
-        this.adjustFontSizeWithStyle(this.fontSize);
+        if (this.fontSize.value$ !== '')this.cmd('fontSize', false, this.fontSize.value);
     }
 
     /**
@@ -345,7 +343,7 @@ export default class EditorComponent extends Vue {
         if (index === null) return;
         this.code = this.codes[index];
         const code = this.code.toLowerCase();
-        let html = `<p><br/></p><pre style="white-space: pre" title="代码区"><code class="${code}"><p><br/></p></code></pre><p><br/></p>`;
+        let html = `<pre style="white-space: pre" title="代码区"><code class="${code}"><p><br/></p></code></pre><p><br/></p>`;
         this.removeFormat();
         this.cmd('insertHTML', false, html);
         const pel = CursorUtil.getRangeCommonParent();
@@ -751,9 +749,7 @@ export default class EditorComponent extends Vue {
         if (!this.isRangeInCode()) return;
         let obj = <any>CommonUtil.isIE() ? window : e;
         if (!obj.clipboardData) return;
-        // 只复制文本，并将多个换行（文字换行和p标签在获取文本时会变成两个换行）转为单个换行
-        const text = obj.clipboardData.getData("text")
-            .replace(/(\r\n)+/gm,'\r\n');
+        const text = obj.clipboardData.getData("text");
         const df = document.createDocumentFragment();
         df.appendChild(document.createTextNode(text));
         CursorUtil.insertNode(df);
