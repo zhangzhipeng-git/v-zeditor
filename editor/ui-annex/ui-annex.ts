@@ -78,8 +78,12 @@ export default class UIAnnexComponent extends Vue {
             video: UIAnnexComponent.VIDEOARR,
         }[this.type];
         file.accept = arr.join(",");
+        if ('onchange' in file) {
+            file.onchange = this.fileChange;
+        } else {
+            file.onpropertychange = this.fileChange;
+        }
         file.click();
-        file.onchange = this.fileChange;
     }
 
     /**

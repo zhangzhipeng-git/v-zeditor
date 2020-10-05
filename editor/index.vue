@@ -21,8 +21,8 @@
         <!-- 下面使用mousedown事件是因为可以使用e.preventDefault()阻止默认事件，阻止编辑面板失焦 -->
         <!-- 而针对必定要失焦的情况，则采用记住光标，再设置上次记住的光标的方式来做到伪失焦。 -->
         <!-- 字体 -->
-        <div ref="fontName" class="wd-edit-link-box fontName" @mousedown="setFontName($event)">
-          <a data-tip="字体" class="wd-edit-link" href="javascript:void 0">
+        <div ref="fontName" class="wd-edit-link-box fontName" @mousedown="!inCode&&setFontName($event)">
+          <a data-tip="字体" :class="{disabled: inCode}" class="wd-edit-link" href="javascript:void 0">
             <span :style="{'font-family': fontFamily.value}">{{fontFamily.key}}</span>
             <i class="iconmoon icon-caret-down"></i>
           </a>
@@ -37,15 +37,14 @@
           </ul>
         </div>
         <!-- 字号 -->
-        <div ref="fontSize" class="wd-edit-link-box fontSize" @mousedown="setFontSize($event)">
-          <a data-tip="字号" class="wd-edit-link" href="javascript:void 0">
+        <div ref="fontSize" class="wd-edit-link-box fontSize" @mousedown="!inCode&&setFontSize($event)">
+          <a data-tip="字号" :class="{disabled: inCode}" class="wd-edit-link" href="javascript:void 0">
             <span>{{fontSize.key}}</span>
             <i class="iconmoon icon-caret-down"></i>
           </a>
           <ul v-show="switchFontSizePannel" class="wd-font-size-list">
             <li v-for="(fs, i) in fontSizes" :key="i">
-              <!-- 注意这里style的fontSize绑定的是x-small，small这种值 -->
-              <a href="javascript:void 0" :data-index="i" :style="{'font-size': fs.key}">{{fs.key}}</a>
+              <a href="javascript:void 0" :data-index="i">{{fs.key}}</a>
             </li>
           </ul>
         </div>
@@ -53,9 +52,9 @@
         <div
           ref="formatBlock"
           class="wd-edit-link-box formatBlock"
-          @mousedown="setFormatBlock($event)"
+          @mousedown="!inCode&&setFormatBlock($event)"
         >
-          <a data-tip="文本格式" class="wd-edit-link" href="javascript:void 0">
+          <a data-tip="文本格式" :class="{disabled: inCode}" class="wd-edit-link" href="javascript:void 0">
             <span>{{formatBlock}}</span>
             <i class="iconmoon icon-caret-down"></i>
           </a>
@@ -66,8 +65,8 @@
           </ul>
         </div>
         <!-- 文本色 -->
-        <div ref="foreColor" class="wd-edit-link-box foreColor" @mousedown="setForeColor($event)">
-          <a data-tip="字色" class="wd-edit-link" href="javascript:void 0">
+        <div ref="foreColor" class="wd-edit-link-box foreColor" @mousedown="!inCode&&setForeColor($event)">
+          <a data-tip="字色" :class="{disabled: inCode}" class="wd-edit-link" href="javascript:void 0">
             <i class="iconmoon icon-font-color" :style="{'border-bottom-color': foreColor}"></i>
             <i class="iconmoon icon-caret-down"></i>
           </a>
@@ -89,8 +88,8 @@
           </div>
         </div>
         <!-- 高亮色 -->
-        <div ref="backColor" class="wd-edit-link-box backColor" @mousedown="setBackColor($event)">
-          <a data-tip="高亮" class="wd-edit-link" href="javascript:void 0">
+        <div ref="backColor" class="wd-edit-link-box backColor" @mousedown="!inCode&&setBackColor($event)">
+          <a data-tip="高亮" :class="{disabled: inCode}" class="wd-edit-link" href="javascript:void 0">
             <i class="iconmoon icon-pencil" :style="{'border-bottom-color': backColor}"></i>
             <i class="iconmoon icon-caret-down"></i>
           </a>
@@ -112,45 +111,45 @@
           </div>
         </div>
         <!-- 是否加粗 -->
-        <div class="wd-edit-link-box bold" @mousedown="switchBold($event)">
-          <a data-tip="加粗" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box bold" @mousedown="!inCode&&switchBold($event)">
+          <a data-tip="加粗" :class="{'active': isBold,disabled:inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-bold"></i>
           </a>
         </div>
         <!-- 是否斜体 -->
-        <div class="wd-edit-link-box italic" @mousedown="switchItalic($event)">
-          <a data-tip="斜体" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box italic" @mousedown="!inCode&&switchItalic($event)">
+          <a data-tip="斜体" :class="{'active': isItalic,disabled:inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-italic"></i>
           </a>
         </div>
         <!-- 是否下划线 -->
-        <div class="wd-edit-link-box underline" @mousedown="switchUnderline($event)">
-          <a data-tip="下划线" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box underline" @mousedown="!inCode&&switchUnderline($event)">
+          <a data-tip="下划线" :class="{'active': isUnderline,disabled:inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-underline"></i>
           </a>
         </div>
         <!-- 删除线 -->
-        <div class="wd-edit-link-box strikeThrough" @mousedown="switchStrikeThrough($event)">
-          <a data-tip="删除线" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box strikeThrough" @mousedown="!inCode&&switchStrikeThrough($event)">
+          <a data-tip="删除线" :class="{'active': isStrikeThrough,disabled:inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-strikethrough"></i>
           </a>
         </div>
-        <!-- 上标 - 不可关 -->
-        <div class="wd-edit-link-box superscript" @mousedown="superscript($event)">
-          <a data-tip="上标" class="wd-edit-link" href="javascript: void 0">
+        <!-- 上标 -->
+        <div class="wd-edit-link-box superscript" @mousedown="!inCode&&setScript($event, 'superscript')">
+          <a data-tip="上标" :class="{'active': scriptActive === 'superscript',disabled:inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-superscript"></i>
           </a>
         </div>
-        <!-- 下标 - 不可关-->
-        <div class="wd-edit-link-box subscript" @mousedown="subscript($event)">
-          <a data-tip="下标" class="wd-edit-link" href="javascript: void 0">
+        <!-- 下标 -->
+        <div class="wd-edit-link-box subscript" @mousedown="!inCode&&setScript($event, 'subscript')">
+          <a data-tip="下标" :class="{'active': scriptActive === 'subscript',disabled:inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-subscript"></i>
           </a>
         </div>
-        <!-- 居左 - 不可关-->
-        <div class="wd-edit-link-box justifyLeft" @mousedown="setJustifyactive($event, 'Left')">
+        <!-- 居左 -->
+        <div class="wd-edit-link-box justifyLeft" @mousedown="!inCode&&setJustifyactive($event, 'Left')">
           <a
-            :class="{'wd-edit-link-active': justifyActive === 'justifyLeft'}"
+            :class="{'active': justifyActive === 'justifyLeft',disabled:inCode}"
             data-tip="居左"
             class="wd-edit-link"
             href="javascript: void 0"
@@ -158,10 +157,10 @@
             <i class="iconmoon icon-paragraph-left"></i>
           </a>
         </div>
-        <!-- 居中 - 不可关-->
-        <div class="wd-edit-link-box justifyCenter" @mousedown="setJustifyactive($event, 'Center')">
+        <!-- 居中 -->
+        <div class="wd-edit-link-box justifyCenter" @mousedown="!inCode&&setJustifyactive($event, 'Center')">
           <a
-            :class="{'wd-edit-link-active': justifyActive === 'justifyCenter'}"
+            :class="{'active': justifyActive === 'justifyCenter',disabled:inCode}"
             data-tip="居中"
             class="wd-edit-link"
             href="javascript: void 0"
@@ -169,10 +168,10 @@
             <i class="iconmoon icon-paragraph-center"></i>
           </a>
         </div>
-        <!-- 居右 - 不可关-->
-        <div class="wd-edit-link-box justifyRight" @mousedown="setJustifyactive($event, 'Right')">
+        <!-- 居右 -->
+        <div class="wd-edit-link-box justifyRight" @mousedown="!inCode&&setJustifyactive($event, 'Right')">
           <a
-            :class="{'wd-edit-link-active': justifyActive === 'justifyRight'}"
+            :class="{'active': justifyActive === 'justifyRight',disabled:inCode}"
             data-tip="居右"
             class="wd-edit-link"
             href="javascript: void 0"
@@ -180,10 +179,10 @@
             <i class="iconmoon icon-paragraph-right"></i>
           </a>
         </div>
-        <!-- 左右对齐 - 不可关-->
-        <div class="wd-edit-link-box justifyFull" @mousedown="setJustifyactive($event, 'Full')">
+        <!-- 左右对齐 -->
+        <div class="wd-edit-link-box justifyFull" @mousedown="!inCode&&setJustifyactive($event, 'Full')">
           <a
-            :class="{'wd-edit-link-active': justifyActive === 'justifyFull'}"
+            :class="{'active': justifyActive === 'justifyFull',disabled:inCode}"
             data-tip="左右对齐"
             class="wd-edit-link"
             href="javascript: void 0"
@@ -191,68 +190,66 @@
             <i class="iconmoon icon-paragraph-justify"></i>
           </a>
         </div>
-        <!-- 文本缩进 - 不可关-->
-        <div class="wd-edit-link-box indent" @mousedown="indent($event)">
-          <a data-tip="缩进" class="wd-edit-link" href="javascript: void 0">
+        <!-- 文本缩进 -->
+        <div class="wd-edit-link-box indent" @mousedown="!inCode&&indent($event)">
+          <a data-tip="缩进" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-indent-increase"></i>
           </a>
         </div>
-        <!-- 文本增进  - 不可关-->
-        <div class="wd-edit-link-box outdent" @mousedown="outdent($event)">
-          <a data-tip="减少缩进" class="wd-edit-link" href="javascript: void 0">
+        <!-- 文本增进  -->
+        <div class="wd-edit-link-box outdent" @mousedown="!inCode&&outdent($event)">
+          <a data-tip="减少缩进" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-indent-decrease"></i>
           </a>
         </div>
         <!-- 清除格式 -->
-        <div class="wd-edit-link-box removeFormat" @mousedown="removeFormat($event)">
-          <a data-tip="清除格式" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box removeFormat" @mousedown="!inCode&&removeFormat($event)">
+          <a data-tip="清除格式" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-clear-formatting"></i>
           </a>
         </div>
         <!-- 有序列表 -->
-        <div class="wd-edit-link-box insertOrderedList" @mousedown="insertOrderedList($event)">
-          <a data-tip="有序列表" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box insertOrderedList" @mousedown="!inCode&&insertOrderedList($event)">
+          <a data-tip="有序列表" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-list-numbered"></i>
           </a>
         </div>
         <!-- 无序列表 -->
-        <div class="wd-edit-link-box insertUnorderedList" @mousedown="insertUnorderedList($event)">
-          <a data-tip="无序列表" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box insertUnorderedList" @mousedown="!inCode&&insertUnorderedList($event)">
+          <a data-tip="无序列表" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-list2"></i>
           </a>
         </div>
         <!-- 表格 mdn无api，用insertHTML实现 -->
-        <div class="wd-edit-link-box insertHTML" @mousedown="insertTable($event)">
-          <a data-tip="表格" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box insertHTML" @mousedown="!inCode&&insertTable($event)">
+          <a data-tip="表格" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-table"></i>
           </a>
         </div>
         <!-- 插入超链接，弹窗 -->
-        <div class="wd-edit-link-box insertHTML" @mousedown="insertLink($event)">
-          <a data-tip="链接" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box insertHTML" @mousedown="!inCode&&insertLink($event)">
+          <a data-tip="链接" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-link"></i>
           </a>
         </div>
         <!-- 插入水平线hr -->
         <div
           class="wd-edit-link-box insertHorizontalRule"
-          @mousedown="insertHorizontalRule($event)"
+          @mousedown="!inCode&&insertHorizontalRule($event)"
         >
-          <a data-tip="水平线" class="wd-edit-link" href="javascript: void 0">
+          <a data-tip="水平线" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-page-break"></i>
           </a>
         </div>
         <!-- 插入文件 -->
-        <div class="wd-edit-link-box insertHTML" @mousedown="insertFile($event)">
-          <a data-tip="文件" class="wd-edit-link" href="javascript: void 0">
+        <div class="wd-edit-link-box insertHTML" @mousedown="!inCode&&insertFile($event)">
+          <a data-tip="文件" :class="{disabled: inCode}" class="wd-edit-link" href="javascript: void 0">
             <i class="iconmoon icon-upload-cloud"></i>
           </a>
         </div>
         <!-- 插入代码 -->
-        <div ref="code" class="wd-edit-link-box insertHTML" @mousedown="insertCode($event)">
-          <a data-tip="代码" class="wd-edit-link" href="javascript:void 0">
-            <!-- <span>{{code}}</span> -->
-            <!-- <i class="iconmoon icon-caret-down"></i> -->
+        <div ref="code" class="wd-edit-link-box insertHTML" @mousedown="!inCode&&insertCode($event)">
+          <a data-tip="代码" :class="{disabled: inCode}" class="wd-edit-link" href="javascript:void 0">
             <i class="iconmoon icon-embed"></i>
           </a>
           <ul v-show="switchCodePannel" class="wd-code-list">
@@ -329,20 +326,19 @@
 
       <div
         ref="pannel"
-        @keyup="setRange"
+        v-html="vhtml$"
+        contenteditable="true"
         @click="pannelOnClick"
+        @paste="pannelOnPaste"
+        @keyup="keyup($event)"
         @keydown="keydown($event)"
         @blur="isInEditStatus=false"
-        @paste="pannelOnPaste"
-        @beforepaste="pannelOnPaste"
         @input="setRangeAndEmitValue"
         class="wd-deitor-content"
-        contenteditable="true"
-        v-html="vhtml$"
       ></div>
       <!-- 编辑体结束 -->
-      <div class="wd-edit-footer fn-clearfix" ref="footer">
-        <div class="wd-edit-footer-btn" v-if="hasBtn">
+      <div v-if="hasBtn" class="wd-edit-footer fn-clearfix" ref="footer">
+        <div class="wd-edit-footer-btn">
           <button @click="emitContent">保存</button>
         </div>
       </div>
@@ -350,4 +346,7 @@
   </div>
 </template>
 <script lang="ts" src="./index.ts"></script>
+<!-- 这里不用范围注入，既不加上特殊的属性，而是作为全局样式插入到头部标签 -->
+<!-- 原因：其他的痰喘组件如插入链接组件、插入表格组件和插入文件组件的样式被提取到了index.scss
+中，如果使用局部注入样式的方式，则这些组件的样式无法生效，因为组件并不会随宿主组件一起添加特殊属性，而引入的时候又不能使用/deep/，所以只能时全局的 -->
 <style lang="scss" src="./index.scss"></style>

@@ -31,9 +31,9 @@
     background-color: $white;
     // 清除浮动
     .fn-clearfix:after {
-        content: '';
-        width:0;
-        height:0;
+        content: "";
+        width: 0;
+        height: 0;
         display: block;
         clear: both;
     }
@@ -47,7 +47,8 @@
     // 承载a标签
     .wd-edit-link-box {
         position: relative;
-        float:left;
+        float: left;
+        margin-left: 0.2rem;
     }
     // 编辑项 - a标签，icon容器
     .wd-edit-link {
@@ -95,8 +96,9 @@
             font-size: $font-size-small;
         }
     }
-    // 字样下拉菜单
-    .fontName .wd-edit-link {
+    // 字样下拉按钮,字号下拉按钮
+    .fontName .wd-edit-link,
+    .fontSize .wd-edit-link {
         width: 6.2rem;
         text-align: left;
         // 下箭头icon固定在右侧
@@ -107,17 +109,13 @@
             line-height: 1.7rem;
         }
     }
-    // 字号下拉域
+    // 字号下拉按钮
     .fontSize .wd-edit-link {
         width: 6rem;
     }
-    // 文本格式下拉域
+    // 文本格式下拉按钮
     .formatBlock .wd-edit-link {
-        width: 3rem;
-    }
-    // 编辑项 - a标签聚焦
-    .wd-edit-link-active {
-        background-color: $gray-light-m;
+        width: 4rem;
     }
     // 字样，块标签，前景色，背景色的下拉箭头
     .fontSize,
@@ -190,15 +188,15 @@
     }
     // 字样列表
     .wd-font-name-list {
-        width: 8rem;
+        width: 6.2rem;
     }
     // 字号列表
     .wd-font-size-list {
-        width: 10rem;
+        width: 6rem;
     }
     // 文本格式列表
     .wd-format-block-list {
-        width: 3rem;
+        width: 4rem;
     }
     // 代码语言列表
     .wd-code-list {
@@ -218,11 +216,6 @@
         max-height: 15rem;
         overflow: auto;
         font-family: "Microsoft Yahei";
-        // 编辑区域内容默认文字大小是1rem，这里统一渲染为.75rem大小
-        font-size: 0.75rem;
-        font[size="3"] {
-            font-size: 0.75rem !important;
-        }
         p,
         div {
             word-break: break-all;
@@ -256,10 +249,13 @@
             word-break: break-all;
         }
         pre {
-            padding: .5rem .2rem;
+            padding: 0.5rem 0.2rem;
             border-radius: 0.3rem;
             overflow: auto;
             white-space: pre;
+            // pointer-events:none 禁用ie中pre标签的resize和drag事件，但无法阻止输入时的这两个事件
+            // 即使阻止resize和dargstart事件也不生效。。。
+            pointer-events: none;
         }
     }
     // 编辑脚部
@@ -273,6 +269,24 @@
             padding: 0 0.5rem;
             color: white;
             border-radius: 0.3rem;
+        }
+    }
+    // 编辑项 - a标签聚焦
+    .active {
+        background-color: $gray-light-m;
+    }
+    // 编辑项 - a标签禁用
+    .disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        &:hover {
+            background-color: transparent;
+        }
+        &:hover::before {
+            content: none;
+        }
+        &:hover::after {
+            content: none;
         }
     }
 }
@@ -299,9 +313,6 @@
             }
             // 编辑体中a标签
             .wd-deitor-content {
-                a {
-                    color: $main-deep;
-                }
                 pre {
                     background-color: $main-light-s;
                     color: $main;
