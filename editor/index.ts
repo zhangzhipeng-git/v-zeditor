@@ -247,7 +247,7 @@ export default class EditorComponent extends Vue {
         this.code = this.codes[index];
         const code = this.code.toLowerCase();
         const id = (Math.random() + '').slice(2, 8);
-        let html = `<pre style="white-space:pre;" title="代码区"><code class="${code}"><p id="${id}"><br/></p></code></pre><p><br/></p>`;
+        const html = `<pre style="white-space:pre;" title="代码区"><code class="${code}"><p id="${id}"><br/></p></code></pre><p><br/></p>`;
         this.cmd('insertHTML', false, html);
         // 插入html后，将光标移至代码区的p标签中
         CursorUtil.setSelectionToElement(<any>(CommonUtil.id(id)), true);
@@ -390,10 +390,6 @@ export default class EditorComponent extends Vue {
     recieveLinkHTML(html: string) {
         this.startEdit();
         this.cmd('insertHTML', false, html);
-        const el = <HTMLElement>CursorUtil.getRangeCommonParent().parentNode;
-        if (el.style) {
-            el.removeAttribute('style');
-        }
         return true;
     }
 
@@ -976,7 +972,7 @@ export default class EditorComponent extends Vue {
                 this.justifyActive = EditorComponent.FORMAT.justifyActive;
                 return true;
             }
-            const textAlign = e.getAttribute('align');
+            const textAlign = e.getAttribute('align') || e.style.textAlign;
             if (textAlign === 'left') {
                 return this.justifyActive = 'justifyLeft';
             } else if (textAlign === 'center') {
