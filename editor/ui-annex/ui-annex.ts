@@ -25,7 +25,7 @@ import { Watch } from "vue-property-decorator";
 export default class UIAnnexComponent extends Vue {
     url: string = "https://";
     width: string = "100%";
-    height: string = "200px";
+    height: string = "auto";
     type: 'image' | 'audio' | 'video' = "image";
     /** 获取类型对应的名称 */
     typeName: string = '图片';
@@ -64,7 +64,7 @@ export default class UIAnnexComponent extends Vue {
      */
     selectFile() {
         // 需要先设置宽度和高度
-        const num = /^[1-9]\d{1,3}(px|rem|em|vw|vh|%)?$/i;
+        const num = /^[1-9]\d{1,3}(px|rem|em|vw|vh|%)?|auto|inherit|unset$/i;
         if (!num.test(this.width + "") || !num.test(this.height + "")) {
             TipComponent.showTip({
                 text: `上传${this.typeName}前请填写合适的高度和宽度~`
@@ -201,9 +201,7 @@ export default class UIAnnexComponent extends Vue {
      */
     getImageHTML(src: string) {
         return (
-            '<p style="height:' +
-            this.height +
-            ';">' +
+            '<p>' +
             '<img src="' +
             src +
             '" style="height:' +
@@ -211,7 +209,7 @@ export default class UIAnnexComponent extends Vue {
             ';width:' +
             this.width +
             ';object-fit:cover;" />' +
-            "</p><br/>"
+            "</p><p><br/></p>"
         );
     }
     /**
@@ -220,12 +218,12 @@ export default class UIAnnexComponent extends Vue {
      */
     getAudioHTML(src: string) {
         const arr = UIAnnexComponent.AUDIOARR;
-        let html = '<p style="text-align:center;height:' + this.height + ';"><audio controls style="display:inline-block;height:' + '100%' + ';width:' + this.width + ';">'
+        let html = '<p><audio controls style="display:inline-block;height:' + this.height + ';width:' + this.width + ';">'
         for (let i = 0, len = arr.length; i < len; i++) {
             html += '<source src="' + src + '" type="' + arr[i] + '">';
         }
         html += '您的浏览器不支持Audio标签。';
-        html += '</audio>&#8205;&zwj;</p><br/>';
+        html += '</audio>&#8205;&zwj;</p><p><br/></p>';
         return html;
     }
 
@@ -235,12 +233,12 @@ export default class UIAnnexComponent extends Vue {
     */
     getVideoHTML(src: string) {
         const arr = UIAnnexComponent.VIDEOARR;
-        let html = '<p style="text-align:center;height:' + this.height + ';"><video controls style="display:inline-block;height:' + '100%' + ';width:' + this.width + ';">'
+        let html = '<p><video controls style="display:inline-block;height:' + this.height + ';width:' + this.width + ';">'
         for (let i = 0, len = arr.length; i < len; i++) {
             html += '<source src="' + src + '" type="' + arr[i] + '">';
         }
         html += '您的浏览器不支持Video标签。';
-        html += '</video>&#8205;&zwj;</p><br/>';
+        html += '</video>&#8205;&zwj;</p><p><br/></p>';
         return html;
     }
 }

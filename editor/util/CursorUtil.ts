@@ -140,12 +140,14 @@ export default class CursorUtil {
      * @param  {number=0} index? 可选，默认第一个，旧标准就1个
      * @returns Node
      */
-    static getRangeCommonParent(index: number = 0): Node {
+    static getRangeCommonParent(index: number = 0): Node|undefined {
         const range = this.getRange(index);
         if ((<any>range).commonAncestorContainer) {
             return (<Range>range).commonAncestorContainer;
         }
-        return (<TextRange>range).parentElement();
+        if ((<any>range).parentElement) {
+            return (<TextRange>range).parentElement();
+        }
     }
 
     /**

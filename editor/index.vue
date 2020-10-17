@@ -333,7 +333,7 @@
         @keyup="keyup($event)"
         @keydown="keydown($event)"
         @blur="isInEditStatus=false"
-        @input="setRangeAndEmitValue"
+        @input="setRangeAndEmitValue($event)"
         class="wd-deitor-content"
       ></div>
       <!-- 编辑体结束 -->

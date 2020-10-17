@@ -503,9 +503,11 @@ export default class EditorComponent extends Vue {
     /**
      * 获取历史输入
      */
-    history() {
+    history(e: Event) {
+        this.ensureFocus(e);
         this.vhtml$ = window.localStorage.getItem('editor_input') || '';
         this.autoActive();
+        this.setRangeAndEmitValue(0);
     }
 
     /**
@@ -514,6 +516,7 @@ export default class EditorComponent extends Vue {
     removeFormat() {
         this.cmd('removeFormat', false);
         this.initFormatData();
+        this.setDefaultFormat();
     }
 
     /**
@@ -523,7 +526,7 @@ export default class EditorComponent extends Vue {
         const editor: any = this.$refs.editor;
         const header: any = this.$refs.header;
         const pannel: any = this.$refs.pannel;
-        const footer: any = this.$refs.footer;
+        const footer: any = this.$refs.footer || {offsetHeight: 0};
         this.full = !this.full;
         if (this.full) { // 全屏
             editor.style.cssText = 'position:fixed;z-index:99999;top:0;left:0;transform:none;width:100%;height:100%;';
@@ -583,15 +586,16 @@ export default class EditorComponent extends Vue {
      */
     pannelOnPaste(e: any) {
         setTimeout(() => { this.autoActive(); });
-        if (!this.isRangeInCode()) { return; }
-        let obj = <any>CommonUtil.isIE() ? window : e;
-        if (!obj.clipboardData) return;
-        const text = obj.clipboardData.getData('text');
-        const df = document.createDocumentFragment();
-        df.appendChild(document.createTextNode(text));
-        CursorUtil.insertNode(df);
-        e.preventDefault();
-        e.returnValue = false;
+        if (this.isRangeInCode()) { 
+            let obj = <any>CommonUtil.isIE() ? window : e;
+            if (!obj.clipboardData) return;
+            const text = obj.clipboardData.getData('text');
+            const df = document.createDocumentFragment();
+            df.appendChild(document.createTextNode(text));
+            CursorUtil.insertNode(df);
+            e.preventDefault();
+            e.returnValue = false;
+        }
         this.setRangeAndEmitValue(0);
     }
 
@@ -757,15 +761,22 @@ export default class EditorComponent extends Vue {
         }
         // 如果光标周围有内容则不设置默认格式
         const el = CursorUtil.getRangeCommonParent();
-        if (el.nodeType === 3) {
+        if (!el || el.nodeType === 3) {
             return;
         }
         // 如果没有内容，则格式化默认格式
         if (!this.pannel.children || !this.pannel.children.length) {
-            this.cmd('formatBlock', false, this.formatBlock);
-            this.cmd('fontName', false, this.fontFamily.value);
-            this.cmd('fontSize', false, this.fontSize.value);
+            this.setDefaultFormat();
         }
+    }
+
+    /**
+     * 设置默认格式
+     */
+    setDefaultFormat() {
+        this.cmd('formatBlock', false, this.formatBlock);
+        this.cmd('fontName', false, this.fontFamily.value);
+        this.cmd('fontSize', false, this.fontSize.value);
     }
 
     /**
@@ -835,6 +846,7 @@ export default class EditorComponent extends Vue {
         if (!p) { return; }
         // 如果选取对象的节点是文本节点，则将p变为其父节点
         if (p.nodeName === '#text') { p = <HTMLElement>p.parentNode; }
+        if (!p) return;
         // 段落格式
         this.grandChildTograndParent(p, (e: HTMLElement) => {
             if (e === this.pannel) {
