@@ -126,11 +126,13 @@ export default class EditorComponent extends Vue {
         if (nv && this.reset) { // 重新输入绑定
             this.reset = false;
             this.vhtml$ = this.vhtml;
+            this.resetAttrWhenReInput();
             return;
         }
         if (!nv) { // 标记需要重新输入绑定
             this.reset = true;
             this.vhtml$ = '';
+            this.resetAttrWhenReInput();
         };
     }
     /** 默认格式 */
@@ -160,6 +162,14 @@ export default class EditorComponent extends Vue {
 
     mounted() {
         this.parent = (<any>this.$refs.editor).parentNode;
+    }
+
+    /**
+     * 重新输入时，重置相关属性
+     */
+    private resetAttrWhenReInput() {
+        this.range = null;
+        this.inCode = false;
     }
 
     /**
@@ -251,7 +261,7 @@ export default class EditorComponent extends Vue {
         this.cmd('insertHTML', false, html);
         // 插入html后，将光标移至代码区的p标签中
         CursorUtil.setSelectionToElement(<any>(CommonUtil.id(id)), true);
-        this.setRange(); // 手动记录一下光标位置
+        this.detectCode();
     }
 
     /**
@@ -308,12 +318,13 @@ export default class EditorComponent extends Vue {
      */
     setScript(e: Event, cmd: 'superscript' | 'subscript') {
         this.ensureFocus(e);
-        if (this.scriptActive === cmd) {
+        if (this.scriptActive === cmd) { // 取消上/下标
             this.cmd(cmd, false, '');
             this.scriptActive = '';
             return;
         }
-        this.scriptActive = cmd;
+        // 设置上/下标
+        this.scriptActive = cmd; 
         this.cmd(cmd, false, '');
     }
 
@@ -506,8 +517,13 @@ export default class EditorComponent extends Vue {
     history(e: Event) {
         this.ensureFocus(e);
         this.vhtml$ = window.localStorage.getItem('editor_input') || '';
-        this.autoActive();
-        this.setRangeAndEmitValue(0);
+        // 重新赋值的时候，光标丢失了，要重设一下！（放到下一刻时视图更新后执行！）
+        this.$nextTick(() => {
+            CursorUtil.setSelectionToElement(this.pannel, false);
+            this.setRange();
+            this.autoActive();
+        });
+        this.$emit('input', this.vhtml$);
     }
 
     /**
@@ -526,7 +542,7 @@ export default class EditorComponent extends Vue {
         const editor: any = this.$refs.editor;
         const header: any = this.$refs.header;
         const pannel: any = this.$refs.pannel;
-        const footer: any = this.$refs.footer || {offsetHeight: 0};
+        const footer: any = this.$refs.footer || { offsetHeight: 0 };
         this.full = !this.full;
         if (this.full) { // 全屏
             editor.style.cssText = 'position:fixed;z-index:99999;top:0;left:0;transform:none;width:100%;height:100%;';
@@ -562,7 +578,7 @@ export default class EditorComponent extends Vue {
      */
     keyup(e: Event | any) {
         this.setRange();
-        if (this.isRangeInCode()) { return; }
+        if (this.detectCode()) { return; }
         e = e || window.event;
         const key = e.keyCode || e.which || e.charCode;
         // 监听home,end和上下左右按键，或后退键或删除键或enter键，设置激活文字格式
@@ -579,6 +595,9 @@ export default class EditorComponent extends Vue {
         this.initEdit();
         this.setRange();
         this.autoActive();
+        // 点击后检测是否在代码区内，光标在click后出现，
+        // 所以这里需要设置延时任务触发检测。
+        setTimeout(() => this.detectCode());
     }
 
     /**
@@ -586,7 +605,7 @@ export default class EditorComponent extends Vue {
      */
     pannelOnPaste(e: any) {
         setTimeout(() => { this.autoActive(); });
-        if (this.isRangeInCode()) { 
+        if (this.inCode) {
             let obj = <any>CommonUtil.isIE() ? window : e;
             if (!obj.clipboardData) return;
             const text = obj.clipboardData.getData('text');
@@ -693,7 +712,7 @@ export default class EditorComponent extends Vue {
     }
 
     /**
-     * 如果面板不聚焦则使面板聚焦
+     * 如果面板不聚焦则使面板聚焦(focus不会触发click)
      */
     private pannelFocus() {
         if (document.activeElement !== this.pannel) {
@@ -708,9 +727,7 @@ export default class EditorComponent extends Vue {
     private recoverRange() {
         if (!this.pannel) return;
         // 确保编辑面板先是聚焦的
-        if (document.activeElement !== this.pannel) {
-            this.pannel.focus();
-        }
+        this.pannelFocus();
         if (this.range) { // 存在上次光标，则设置上次光标
             CursorUtil.setFirstRange(this.range);
             return;
@@ -755,13 +772,13 @@ export default class EditorComponent extends Vue {
         if (!this.isInEditStatus) {
             this.isInEditStatus = true;
         }
-        // 在代码区不设置默认格式
-        if (this.isRangeInCode()) {
-            return;
-        }
         // 如果光标周围有内容则不设置默认格式
         const el = CursorUtil.getRangeCommonParent();
         if (!el || el.nodeType === 3) {
+            return;
+        }
+        // 在代码区不设置默认格式
+        if (this.inCode) {
             return;
         }
         // 如果没有内容，则格式化默认格式
@@ -783,11 +800,6 @@ export default class EditorComponent extends Vue {
      * input,click,selectionchange事件记录编辑面板光标位置
      */
     private setRange() {
-        if (this.isRangeInCode()) {
-            this.inCode = true;
-        } else {
-            this.inCode = false;
-        }
         this.range = CursorUtil.getRange(0, this.pannel);
     }
 
@@ -825,14 +837,15 @@ export default class EditorComponent extends Vue {
      */
     private cmd(k: string, ui: boolean, v?: any) {
         if (!this.isSupport(k)) {
+            // 尝试做兼容
             if ('insertHTML' === k) { return this.insertHTML(v); }
             this.toast('系统不支持该命令~');
             return false;
         }
-        const r = document.execCommand(k, ui, v || "");
+        const r = document.execCommand(k, ui, v || '');
         // 执行完以下命令后，非代码区内需要自动检测文字格式（样式）
         const blackList = 'redo,undo,delete,insertHTML,insertHorizontalRule,insertUnorderedList,insertOrderedList';
-        if (r && blackList.indexOf(k) > -1 && !this.isRangeInCode()) {
+        if (r && blackList.indexOf(k) > -1 && !this.inCode) {
             this.autoActive();
         }
         return r;
@@ -850,7 +863,6 @@ export default class EditorComponent extends Vue {
         // 段落格式
         this.grandChildTograndParent(p, (e: HTMLElement) => {
             if (e === this.pannel) {
-                this.cmd('formatBlock', false, 'p');
                 this.formatBlock = EditorComponent.FORMAT.formatBlock;
                 return true;
             }
@@ -1037,13 +1049,13 @@ export default class EditorComponent extends Vue {
      * 判断范围Range是否和代码区有交集
      * @returns {boolean} true - 有交集，false - 无交集
      */
-    private isRangeInCode(): boolean {
+    private detectCode() {
         this.pannelFocus();
         let parent = <any>CursorUtil.getRangeCommonParent();
         if (!parent) return false;
         // 如果是文本节点则找其父元素
         if (parent.nodeType === 3) parent = parent.parentNode;
-        return (() => { // 被包含
+        this.inCode = (() => { // 被包含
             let parent$ = parent;
             while (parent$ = parent$.parentNode) {
                 if (parent$.tagName === 'CODE') {
@@ -1055,8 +1067,20 @@ export default class EditorComponent extends Vue {
             }
             return false;
         })() || (() => { // 包含
-            const nodes = parent.querySelectorAll('code');
-            return nodes && nodes.length;
+            const range = CursorUtil.getRange(0) as any;
+            if (range.cloneContents) { // 新标准
+                const ele = (<Range>range).cloneContents();
+                const childs = CommonUtil.getAllChilds(<any>ele);
+                for (let i = 0, len = childs.length; i < len; i++) {
+                    if (childs[i].nodeName === 'CODE') {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            // 旧标准
+            const html = range.htmlText || '';
+            return /<code|<\/code>/.test(html);
         })();
     }
 
