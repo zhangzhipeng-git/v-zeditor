@@ -1,11 +1,11 @@
-﻿# ZEditor（Vue版）
+﻿# ZEditor（Vue 版）
 
 ## Description
 
-一款简单、小清新的编辑器  
+一款简单、小清新的编辑器
 
-[在线演示](https://zzp-dog.github.io/v-zeditor/test/dist/index.html)  
-[github](https://github.com/zzp-dog/v-zeditor)  
+[在线演示](https://zhangzhipeng-git.github.io/v-zeditor/test/dist/index.html)  
+[github](https://github.com/zhangzhipeng-git/v-zeditor)
 
 ## UI
 
@@ -21,26 +21,26 @@ npm install @bigbigbird/zeditor -S
 
 ## Quick Start
 
-dist目录是js和css捆绑在一起的  
-part目录是js和css分离的
+dist 目录是 js 和 css 捆绑在一起的  
+part 目录是 js 和 css 分离的
 
-``` typescript
-import Vue from 'vue'
-import ZEditor from '@bigbigbird/zeditor'
+```typescript
+import Vue from 'vue';
+import ZEditor from '@bigbigbird/zeditor';
 
-Vue.component(ZEditor.name, ZEditor)
+Vue.component(ZEditor.name, ZEditor);
 // or
 @Component({
   components: {
-    'z-editor': ZEditor
-  }
+    'z-editor': ZEditor,
+  },
 })
-export default class NameComponent extends Vue{
+export default class NameComponent extends Vue {
   //...
 }
 ```
 
-``` typescript
+```typescript
 /** props-start */
 
 // 默认没有提交按钮
@@ -116,17 +116,24 @@ uploadFile(obj: {
 /** events-end */
 ```
 
-``` html
+```html
 <template>
-  <z-editor v-model="innerHTML" :options="options" :hasBtn="false" :theme="g" @input="input($event)" @recieveContent="recieveContent($event)"  @uploadFile="uploadFile($event)"/>
+  <z-editor
+    v-model="innerHTML"
+    :options="options"
+    :hasBtn="false"
+    :theme="g"
+    @input="input($event)"
+    @recieveContent="recieveContent($event)"
+    @uploadFile="uploadFile($event)" />
 </template>
 ```
 
 ## Problem
 
-使用v-model时，如果需要重新传入innerHTML，请设置一次innerHTML的值为''(空字符串)，因为内部需要记住选区的位置，所以当编辑区有值的时候，并不会重新输入并响应(但是会将输入值发射出去)，重新输入会导致之前的选区丢失。
+使用 v-model 时，如果需要重新传入 innerHTML，请设置一次 innerHTML 的值为''(空字符串)，因为内部需要记住选区的位置，所以当编辑区有值的时候，并不会重新输入并响应(但是会将输入值发射出去)，重新输入会导致之前的选区丢失。
 
-``` typescript
+```typescript
 setInnerHTML(innerHTML: string) {
   this.innerHTML = '';
   this.$nextTick(() => {
@@ -137,16 +144,16 @@ setInnerHTML(innerHTML: string) {
 
 ## Browser Support
 
-PC端标准浏览器和IE9+.
+PC 端标准浏览器和 IE9+.
 
 ## Security
 
-在前端可以使用xss对html进行无害化处理  
-在后端可以使用jsoup对html进行无害化处理
+在前端可以使用 xss 对 html 进行无害化处理  
+在后端可以使用 jsoup 对 html 进行无害化处理
 
 ## Concat
 
-QQ交流群：486273737  
-Name:  木懵の狗纸  
-个人QQ: 1029512956  
-Email: 1029512956@qq.com  
+QQ 交流群：486273737  
+Name: 木懵の狗纸  
+个人 QQ: 1029512956  
+Email: 1029512956@qq.com
